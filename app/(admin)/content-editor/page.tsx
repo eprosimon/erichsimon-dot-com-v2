@@ -55,19 +55,40 @@ export default function ContentEditorPage() {
   }
 
   const generateMarkdown = () => {
+    const requiredFields = ['title', 'date'];
+    // Add conditional required fields based on content type
+    if (activeTab === 'review') {
+      requiredFields.push('productName', 'rating');
+    } else if (activeTab === 'recommendation') {
+      requiredFields.push('status', 'category');
+    } else if (activeTab === 'project') {
+      requiredFields.push('category');
+    }
+    
+    // Check if any required fields are missing
+    const missingFields = requiredFields.filter(field => !formData[field]);
+    if (missingFields.length > 0) {
+      toast({
+        title: "Missing required fields",
+        description: `Please fill in: ${missingFields.join(', ')}`,
+        variant: "destructive",
+      });
+      return null;
+    }
+  
     let frontmatter = ""
     const content = formData.content
-
+  
     // Common frontmatter fields
     frontmatter += `---\n`
     frontmatter += `title: "${formData.title}"\n`
     frontmatter += `date: "${formData.date}"\n`
     frontmatter += `excerpt: "${formData.excerpt}"\n`
-
+  
     if (formData.tags.length > 0) {
       frontmatter += `tags: [${formData.tags.map((tag) => `"${tag}"`).join(", ")}]\n`
     }
-
+  
     // Content type specific frontmatter
     if (activeTab === "post") {
       if (formData.project) {
@@ -76,27 +97,27 @@ export default function ContentEditorPage() {
     } else if (activeTab === "review") {
       frontmatter += `rating: ${formData.rating}\n`
       frontmatter += `productName: "${formData.productName}"\n`
-
+  
       if (formData.productUrl) {
         frontmatter += `productUrl: "${formData.productUrl}"\n`
       }
-
+  
       if (formData.affiliateUrl) {
         frontmatter += `affiliateUrl: "${formData.affiliateUrl}"\n`
       }
-
+  
       if (formData.pros.length > 0 && formData.pros[0] !== "") {
         frontmatter += `pros: [${formData.pros.map((pro) => `"${pro}"`).join(", ")}]\n`
       }
-
+  
       if (formData.cons.length > 0 && formData.cons[0] !== "") {
         frontmatter += `cons: [${formData.cons.map((con) => `"${con}"`).join(", ")}]\n`
       }
-
+  
       if (formData.verdict) {
         frontmatter += `verdict: "${formData.verdict}"\n`
       }
-
+  
       if (formData.category) {
         frontmatter += `category: "${formData.category}"\n`
       }
@@ -104,23 +125,23 @@ export default function ContentEditorPage() {
       frontmatter += `status: "${formData.status}"\n`
       frontmatter += `category: "${formData.category}"\n`
       frontmatter += `featured: ${formData.featured}\n`
-
+  
       if (formData.productUrl) {
         frontmatter += `url: "${formData.productUrl}"\n`
       }
-
+  
       if (formData.affiliateUrl) {
         frontmatter += `affiliateUrl: "${formData.affiliateUrl}"\n`
       }
-
+  
       if (formData.pros.length > 0 && formData.pros[0] !== "") {
         frontmatter += `pros: [${formData.pros.map((pro) => `"${pro}"`).join(", ")}]\n`
       }
-
+  
       if (formData.cons.length > 0 && formData.cons[0] !== "") {
         frontmatter += `cons: [${formData.cons.map((con) => `"${con}"`).join(", ")}]\n`
       }
-
+  
       frontmatter += `price:\n`
       frontmatter += `  value: ${formData.price.value}\n`
       frontmatter += `  currency: "${formData.price.currency}"\n`
@@ -130,10 +151,25 @@ export default function ContentEditorPage() {
       frontmatter += `status: "${formData.status === "current" ? "ongoing" : "completed"}"\n`
       frontmatter += `lastPostDate: "${formData.date}"\n`
     }
-
+  
     frontmatter += `---\n\n`
-
+  
     return frontmatter + content
+  }
+  
+  // Then in the copyToClipboard and downloadMarkdown functions:
+  const copyToClipboard = () => {
+    const markdown = generateMarkdown()
+    if (!markdown) return;
+    
+    // Rest of the function...
+  }
+  
+  const downloadMarkdown = () => {
+    const markdown = generateMarkdown()
+    if (!markdown) return;
+    
+    // Rest of the function...
   }
 
   const copyToClipboard = () => {
