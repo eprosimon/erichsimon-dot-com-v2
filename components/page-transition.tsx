@@ -5,7 +5,6 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { useAnimationContext } from "@/components/animation-provider"
 
 interface PageTransitionProps {
   children: React.ReactNode
@@ -13,18 +12,12 @@ interface PageTransitionProps {
 
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname()
-  const { globalAnimationsEnabled, pageTransitionComplete, setPageTransitionComplete } = useAnimationContext()
   const [isFirstRender, setIsFirstRender] = useState(true)
   const [forceShow, setForceShow] = useState(false)
 
   useEffect(() => {
     // After first render, mark it as no longer first render
     setIsFirstRender(false)
-
-    // Mark page transition as complete after animation finishes
-    const timer = setTimeout(() => {
-      setPageTransitionComplete(true)
-    }, 300) // Match this with your animation duration
 
     // Safety mechanism: force content to show after a short delay
     // This ensures content is visible even if animations fail
@@ -33,23 +26,21 @@ export function PageTransition({ children }: PageTransitionProps) {
     }, 500) // Reduced from 1000ms to 500ms for faster safety fallback
 
     return () => {
-      clearTimeout(timer)
       clearTimeout(safetyTimer)
     }
-  }, [pathname, setPageTransitionComplete])
+  }, [pathname])
 
   // Improve refresh detection
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Check if this is a refresh or back/forward navigation
-      const navEntries = performance.getEntriesByType("navigation")
+      const navEntries = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
       const isRefresh =
         navEntries.length > 0 && (navEntries[0].type === "reload" || navEntries[0].type === "back_forward")
 
       if (isRefresh) {
         // If it's a refresh, force show content immediately
         setForceShow(true)
-        setPageTransitionComplete(true)
       }
     }
   }, [])
@@ -59,8 +50,14 @@ export function PageTransition({ children }: PageTransitionProps) {
     return <>{children}</>
   }
 
-  // If animations are disabled globally, don't animate
-  if (!globalAnimationsEnabled) {
+  // Determine if animations should be enabled based on the current path
+  const isAnimationEnabledPath =
+    pathname?.includes('/projects') ||
+    pathname?.includes('/reviews') ||
+    pathname?.includes('/recommendations');
+
+  // If animations are disabled for this path, don't animate
+  if (!isAnimationEnabledPath) {
     return <>{children}</>
   }
 

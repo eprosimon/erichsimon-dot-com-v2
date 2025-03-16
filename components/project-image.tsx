@@ -3,7 +3,7 @@
 import Image, { ImageProps } from "next/image"
 import { useState } from "react"
 
-export function ProjectImage(props: ImageProps) {
+export function ProjectImage({ fallbackSrc = "/placeholder.svg", ...props }: ImageProps & { fallbackSrc?: string }) {
     const [imgSrc, setImgSrc] = useState(props.src)
 
     return (
@@ -11,7 +11,7 @@ export function ProjectImage(props: ImageProps) {
             {...props}
             src={imgSrc}
             onError={() => {
-                setImgSrc("/placeholder.svg")
+                setImgSrc(fallbackSrc)
             }}
         />
     )
