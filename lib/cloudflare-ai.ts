@@ -8,11 +8,13 @@ export async function callCloudflareAI(messages: any[], stream = false) {
     throw new Error("Cloudflare environment variables are not properly configured")
   }
 
-  console.log("Calling Cloudflare AI directly:", {
-    modelId,
-    messageCount: messages.length,
-    streaming: stream,
-  })
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Calling Cloudflare AI directly:", {
+      modelId,
+      messageCount: messages.length,
+      streaming: stream,
+    })
+  }
 
   const endpoint = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${modelId}`
 
