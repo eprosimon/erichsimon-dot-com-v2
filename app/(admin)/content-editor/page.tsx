@@ -168,7 +168,11 @@ export default function ContentEditorPage() {
     navigator.clipboard
       .writeText(markdown)
       .then(() => {
-        alert("Markdown copied to clipboard!")
+        toast({
+          title: "Success",
+          description: "Markdown copied to clipboard!",
+          variant: "default",
+        })
       })
       .catch((err) => {
         console.error("Failed to copy: ", err)
