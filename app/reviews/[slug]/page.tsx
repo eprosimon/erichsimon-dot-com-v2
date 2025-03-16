@@ -70,7 +70,15 @@ export default function ReviewPage({ params }: ReviewPageProps) {
 
   return (
     <div className="container max-w-4xl py-6 md:py-16">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{ 
+          __html: JSON.stringify(structuredData)
+            .replace(/</g, '\\u003c')
+            .replace(/>/g, '\\u003e')
+            .replace(/&/g, '\\u0026')
+        }} 
+      />
 
       <Link
         href="/reviews"
