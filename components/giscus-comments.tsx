@@ -43,7 +43,7 @@ export function GiscusComments() {
       }
     }
   }, [mounted, resolvedTheme])
-
+  }, [mounted, resolvedTheme])
   return <div id="giscus-comments" className="mt-6" />
 }
 
