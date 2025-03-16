@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ContentForm } from "@/components/admin/content-form"
 import { ContentPreview } from "@/components/admin/content-preview"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { toast } from "@/hooks/use-toast"
+import { toast } from "@/components/ui/use-toast"
 
 // This page is not indexed by search engines and is not linked from anywhere
 export default function ContentEditorPage() {
