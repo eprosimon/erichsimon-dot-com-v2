@@ -17,7 +17,7 @@ export function FeaturedPostCard({ post, className = "" }: FeaturedPostCardProps
     >
       <div className="aspect-video w-full bg-muted relative">
         <Image
-          src="/placeholder.svg?height=600&width=1200"
+          src={post.coverImage || "/placeholder.svg?height=600&width=1200"}
           alt={post.title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
