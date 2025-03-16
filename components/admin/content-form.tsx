@@ -460,7 +460,7 @@ export function ContentForm({ type, data, onChange }: ContentFormProps) {
             </div>
             <div className="space-y-2">
               <Label htmlFor="pricePeriod">Period</Label>
-              <Select value={price.period} onValueChange={(value: any) => setPrice({ ...price, period: value })}>
+              <Select value={price.period} onValueChange={(value: "monthly" | "yearly" | "one-time") => setPrice({ ...price, period: value })}>
                 <SelectTrigger id="pricePeriod">
                   <SelectValue placeholder="Select period" />
                 </SelectTrigger>
