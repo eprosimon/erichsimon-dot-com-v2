@@ -14,14 +14,20 @@ export function ChatScrollAnchor({ trackVisibility = false }: ChatScrollAnchorPr
     rootMargin: "0px 0px -150px 0px",
   })
 
-  const scrollRef = useRef<HTMLDivElement>(null)
+export function ChatScrollAnchor({ trackVisibility = false }: ChatScrollAnchorProps) {
+  const { ref, inView, entry } = useInView({
+    trackVisibility,
+    delay: 100,
+    rootMargin: "0px 0px -150px 0px",
+  })
 
   useEffect(() => {
-    if (!inView && entry && scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" })
+    if (!inView && entry && entry.target) {
+      entry.target.scrollIntoView({ behavior: "smooth" })
     }
   }, [inView, entry])
 
   return <div ref={ref} className="h-1 w-full" />
+}
 }
 
