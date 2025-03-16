@@ -34,7 +34,18 @@ export function generateStaticParams() {
 
 export default function TagPage({ params }: TagPageProps) {
   const { tag } = params
-  const posts = getAllPosts() || []
+export default function TagPage({ params }: TagPageProps) {
+  const { tag } = params;
+  let posts = [];
+  try {
+    posts = getAllPosts() || [];
+  } catch (error) {
+    console.error(`Error fetching posts for tag "${tag}":`, error);
+    // Could also add UI feedback about the error
+  }
+  const filteredPosts = posts.filter((post) => post.tags?.includes(tag));
+  // ... rest of the component code
+}
   const filteredPosts = posts.filter((post) => post.tags?.includes(tag))
 
   return (
