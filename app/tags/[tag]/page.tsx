@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
 import { getAllPosts } from "@/lib/mdx"
+import type { Post } from "@/lib/types"
 import { PostCard } from "@/components/post-card"
 
 interface TagPageProps {
@@ -33,10 +34,8 @@ export function generateStaticParams() {
 }
 
 export default function TagPage({ params }: TagPageProps) {
-  const { tag } = params
-export default function TagPage({ params }: TagPageProps) {
   const { tag } = params;
-  let posts = [];
+  let posts: Post[] = [];
   try {
     posts = getAllPosts() || [];
   } catch (error) {
@@ -44,9 +43,6 @@ export default function TagPage({ params }: TagPageProps) {
     // Could also add UI feedback about the error
   }
   const filteredPosts = posts.filter((post) => post.tags?.includes(tag));
-  // ... rest of the component code
-}
-  const filteredPosts = posts.filter((post) => post.tags?.includes(tag))
 
   return (
     <div className="container py-10 md:py-16">

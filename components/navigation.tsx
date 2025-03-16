@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
-import { AnimationToggle } from "@/components/animation-toggle"
 import { MobileNav } from "@/components/mobile-nav"
 import { motion } from "framer-motion"
 
@@ -80,7 +79,6 @@ export function Navigation() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <AnimationToggle />
           <ModeToggle />
           <Button variant="outline" size="sm" asChild className="hidden md:flex" title="RSS feed">
             <Link href="/api/rss">RSS</Link>

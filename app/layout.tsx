@@ -4,7 +4,8 @@ import ClientLayout from "./client"
 export const metadata = {
   title: "Erich Simon",
   description: "Personal blog and thoughts",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  metadataBase: new URL('https://erichsimon.com'),
 }
 
 export default function RootLayout({
@@ -14,7 +15,5 @@ export default function RootLayout({
 }) {
   return <ClientLayout>{children}</ClientLayout>
 }
-
-
 
 import './globals.css'

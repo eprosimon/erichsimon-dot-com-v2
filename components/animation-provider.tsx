@@ -12,59 +12,36 @@ interface AnimationContextType {
 }
 
 const AnimationContext = createContext<AnimationContextType>({
-  globalAnimationsEnabled: true,
-  toggleAnimations: () => {},
+  globalAnimationsEnabled: false,
+  toggleAnimations: () => { },
   pageTransitionComplete: false,
-  setPageTransitionComplete: () => {},
+  setPageTransitionComplete: () => { },
 })
 
 export function AnimationProvider({ children }: { children: React.ReactNode }) {
-  const [globalAnimationsEnabled, setGlobalAnimationsEnabled] = useState(true)
-  const [pageTransitionComplete, setPageTransitionComplete] = useState(false)
+  const [globalAnimationsEnabled, setGlobalAnimationsEnabled] = useState(false)
+  const [pageTransitionComplete, setPageTransitionComplete] = useState(true)
   const pathname = usePathname()
 
   // Reset page transition state on route change
   useEffect(() => {
-    // Improved refresh detection
-    if (typeof window !== "undefined") {
-      const navEntries = performance.getEntriesByType("navigation")
-      const isRefresh =
-        navEntries.length > 0 && (navEntries[0].type === "reload" || navEntries[0].type === "back_forward")
-
-      if (isRefresh) {
-        // If it's a refresh, mark page transition as complete immediately
-        setPageTransitionComplete(true)
-        return
-      }
-    }
-
-    // For normal navigation, reset and then quickly complete
-    setPageTransitionComplete(false)
-
-    // Mark page transition as complete after a very short delay
-    const timer = setTimeout(() => {
-      setPageTransitionComplete(true)
-    }, 50) // Reduced from 100ms to 50ms for faster transitions
-
-    return () => clearTimeout(timer)
+    // Always mark page transition as complete immediately
+    setPageTransitionComplete(true)
   }, [pathname])
 
   // Load animation preference from localStorage on mount
   useEffect(() => {
     if (typeof window === "undefined") return
 
-    const storedPreference = localStorage.getItem("animations-enabled")
-    if (storedPreference !== null) {
-      setGlobalAnimationsEnabled(storedPreference === "true")
-    }
+    // Force animations to be disabled
+    localStorage.setItem("animations-enabled", "false")
   }, [])
 
   const toggleAnimations = () => {
-    const newValue = !globalAnimationsEnabled
-    setGlobalAnimationsEnabled(newValue)
-
+    // Keep animations disabled
+    setGlobalAnimationsEnabled(false)
     if (typeof window !== "undefined") {
-      localStorage.setItem("animations-enabled", String(newValue))
+      localStorage.setItem("animations-enabled", "false")
     }
   }
 

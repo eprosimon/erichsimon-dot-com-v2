@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ContentForm } from "@/components/admin/content-form"
 import { ContentPreview } from "@/components/admin/content-preview"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { toast } from "@/hooks/use-toast"
 
 // This page is not indexed by search engines and is not linked from anywhere
 export default function ContentEditorPage() {
@@ -64,9 +65,12 @@ export default function ContentEditorPage() {
     } else if (activeTab === 'project') {
       requiredFields.push('category');
     }
-    
+
     // Check if any required fields are missing
-    const missingFields = requiredFields.filter(field => !formData[field]);
+    const missingFields = requiredFields.filter(field => {
+      return !formData[field as keyof typeof formData];
+    });
+
     if (missingFields.length > 0) {
       toast({
         title: "Missing required fields",
@@ -75,20 +79,20 @@ export default function ContentEditorPage() {
       });
       return null;
     }
-  
+
     let frontmatter = ""
     const content = formData.content
-  
+
     // Common frontmatter fields
     frontmatter += `---\n`
     frontmatter += `title: "${formData.title}"\n`
     frontmatter += `date: "${formData.date}"\n`
     frontmatter += `excerpt: "${formData.excerpt}"\n`
-  
+
     if (formData.tags.length > 0) {
       frontmatter += `tags: [${formData.tags.map((tag) => `"${tag}"`).join(", ")}]\n`
     }
-  
+
     // Content type specific frontmatter
     if (activeTab === "post") {
       if (formData.project) {
@@ -97,27 +101,27 @@ export default function ContentEditorPage() {
     } else if (activeTab === "review") {
       frontmatter += `rating: ${formData.rating}\n`
       frontmatter += `productName: "${formData.productName}"\n`
-  
+
       if (formData.productUrl) {
         frontmatter += `productUrl: "${formData.productUrl}"\n`
       }
-  
+
       if (formData.affiliateUrl) {
         frontmatter += `affiliateUrl: "${formData.affiliateUrl}"\n`
       }
-  
+
       if (formData.pros.length > 0 && formData.pros[0] !== "") {
         frontmatter += `pros: [${formData.pros.map((pro) => `"${pro}"`).join(", ")}]\n`
       }
-  
+
       if (formData.cons.length > 0 && formData.cons[0] !== "") {
         frontmatter += `cons: [${formData.cons.map((con) => `"${con}"`).join(", ")}]\n`
       }
-  
+
       if (formData.verdict) {
         frontmatter += `verdict: "${formData.verdict}"\n`
       }
-  
+
       if (formData.category) {
         frontmatter += `category: "${formData.category}"\n`
       }
@@ -125,23 +129,23 @@ export default function ContentEditorPage() {
       frontmatter += `status: "${formData.status}"\n`
       frontmatter += `category: "${formData.category}"\n`
       frontmatter += `featured: ${formData.featured}\n`
-  
+
       if (formData.productUrl) {
         frontmatter += `url: "${formData.productUrl}"\n`
       }
-  
+
       if (formData.affiliateUrl) {
         frontmatter += `affiliateUrl: "${formData.affiliateUrl}"\n`
       }
-  
+
       if (formData.pros.length > 0 && formData.pros[0] !== "") {
         frontmatter += `pros: [${formData.pros.map((pro) => `"${pro}"`).join(", ")}]\n`
       }
-  
+
       if (formData.cons.length > 0 && formData.cons[0] !== "") {
         frontmatter += `cons: [${formData.cons.map((con) => `"${con}"`).join(", ")}]\n`
       }
-  
+
       frontmatter += `price:\n`
       frontmatter += `  value: ${formData.price.value}\n`
       frontmatter += `  currency: "${formData.price.currency}"\n`
@@ -151,29 +155,16 @@ export default function ContentEditorPage() {
       frontmatter += `status: "${formData.status === "current" ? "ongoing" : "completed"}"\n`
       frontmatter += `lastPostDate: "${formData.date}"\n`
     }
-  
+
     frontmatter += `---\n\n`
-  
+
     return frontmatter + content
-  }
-  
-  // Then in the copyToClipboard and downloadMarkdown functions:
-  const copyToClipboard = () => {
-    const markdown = generateMarkdown()
-    if (!markdown) return;
-    
-    // Rest of the function...
-  }
-  
-  const downloadMarkdown = () => {
-    const markdown = generateMarkdown()
-    if (!markdown) return;
-    
-    // Rest of the function...
   }
 
   const copyToClipboard = () => {
     const markdown = generateMarkdown()
+    if (!markdown) return;
+
     navigator.clipboard
       .writeText(markdown)
       .then(() => {
@@ -186,6 +177,8 @@ export default function ContentEditorPage() {
 
   const downloadMarkdown = () => {
     const markdown = generateMarkdown()
+    if (!markdown) return;
+
     const blob = new Blob([markdown], { type: "text/markdown" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -247,7 +240,11 @@ export default function ContentEditorPage() {
                   </TabsContent>
 
                   <TabsContent value="preview">
-                    <ContentPreview type={type.id} data={formData} markdown={generateMarkdown()} />
+                    <ContentPreview
+                      type={type.id}
+                      data={formData}
+                      markdown={generateMarkdown() || ""}
+                    />
                   </TabsContent>
                 </Tabs>
               </CardContent>

@@ -18,8 +18,9 @@ export async function callCloudflareAI(messages: any[], stream = false) {
 
   const endpoint = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${modelId}`
 
+  let response;
   try {
-    const response = await fetch(endpoint, {
+    response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,10 +33,11 @@ export async function callCloudflareAI(messages: any[], stream = false) {
         temperature: 0.7,
       }),
     })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Network error when calling Cloudflare AI:", error)
-    throw new Error(`Network error when calling Cloudflare AI: ${error.message}`)
+    throw new Error(`Network error when calling Cloudflare AI: ${error instanceof Error ? error.message : String(error)}`)
   }
+
   if (!response.ok) {
     const errorText = await response.text()
     console.error("Cloudflare AI API error:", {

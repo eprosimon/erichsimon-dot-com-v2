@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   }
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   const categories = getAllProjectCategories()
 
   return categories.map((category) => ({
@@ -39,14 +39,12 @@ export function generateStaticParams() {
 
 export default function ProjectCategoryPage({ params }: CategoryPageProps) {
   const decodedCategory = decodeURIComponent(params.category)
-  try {
-    const projects = getProjectsByCategory(decodedCategory)
 
-    if (projects.length === 0) {
-      notFound()
-    }
-  } catch (error) {
-    console.error(`Error fetching projects for category ${decodedCategory}:`, error)
+  // Try to find projects for this category
+  const projects = getProjectsByCategory(decodedCategory)
+
+  // If no projects found, show 404 page
+  if (projects.length === 0) {
     notFound()
   }
 

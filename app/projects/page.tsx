@@ -48,7 +48,7 @@ export default function ProjectsPage() {
         </Button>
         {categories.map((category) => (
           <Button key={category} variant="outline" className="hover:bg-primary/5">
-            {category}
+            <Link href={`/projects/category/${encodeURIComponent(category)}`}>{category}</Link>
           </Button>
         ))}
       </div>
@@ -133,7 +133,7 @@ export default function ProjectsPage() {
         <div className="flex flex-wrap justify-center gap-2">
           {categories.map((category) => (
             <Badge key={category} variant="outline" className="text-sm hover:bg-primary/5 transition-colors">
-              <Link href={`/projects?category=${category}`}>{category}</Link>
+              <Link href={`/projects/category/${encodeURIComponent(category)}`}>{category}</Link>
             </Badge>
           ))}
         </div>
