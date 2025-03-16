@@ -43,8 +43,15 @@ export default function ReviewsPage() {
           All Reviews
         </Button>
         {categories.map((category) => (
-          <Button key={category} variant="outline" className="hover:bg-primary/5">
-            {category}
+          <Button 
+            key={category} 
+            variant="outline" 
+            className="hover:bg-primary/5"
+            asChild
+          >
+            <Link href={`/reviews?category=${category}`}>
+              {category}
+            </Link>
           </Button>
         ))}
       </div>
