@@ -110,11 +110,7 @@ export default function RecommendationsPage({
             </p>
             <p className="mt-4 text-sm">
               <strong>Last updated:</strong>{" "}
-              {new Date().toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              March 15, 2025
             </p>
           </div>
         </div>
