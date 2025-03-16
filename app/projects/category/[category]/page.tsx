@@ -39,9 +39,14 @@ export function generateStaticParams() {
 
 export default function ProjectCategoryPage({ params }: CategoryPageProps) {
   const decodedCategory = decodeURIComponent(params.category)
-  const projects = getProjectsByCategory(decodedCategory)
+  try {
+    const projects = getProjectsByCategory(decodedCategory)
 
-  if (projects.length === 0) {
+    if (projects.length === 0) {
+      notFound()
+    }
+  } catch (error) {
+    console.error(`Error fetching projects for category ${decodedCategory}:`, error)
     notFound()
   }
 
