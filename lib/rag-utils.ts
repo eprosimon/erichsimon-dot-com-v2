@@ -25,7 +25,8 @@ export interface EmbeddingVector {
 export async function generateEmbeddings(text: string): Promise<number[]> {
   // This will be implemented when we add the embedding functionality
   console.log("Generating embeddings for:", text.substring(0, 50) + "...")
-  return []
+  // TODO: IMPLEMENT BEFORE PRODUCTION - Currently returns mock data
+  throw new Error("generateEmbeddings not implemented yet")
 }
 
 // Placeholder function for future implementation
