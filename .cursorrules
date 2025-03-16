@@ -1,0 +1,31 @@
+{
+    "packageManager": "pnpm",
+    "turboTasks": {
+        "dev": "pnpm turbo:dev",
+        "build": "pnpm turbo:build",
+        "lint": "pnpm turbo:lint",
+        "clean": "pnpm clean"
+    },
+    "rules": [
+        {
+            "description": "Always use pnpm instead of npm or yarn",
+            "pattern": "npm (install|i|add|run)|yarn (add|install)",
+            "message": "Please use pnpm instead of npm or yarn"
+        },
+        {
+            "description": "Use Turbo for build operations",
+            "pattern": "next build",
+            "message": "Please use 'pnpm turbo:build' for better caching"
+        },
+        {
+            "description": "Use 'tasks' instead of 'pipeline' in turbo.json",
+            "pattern": "\"pipeline\"\\s*:",
+            "message": "In Turbo 2.0+, use 'tasks' instead of 'pipeline' in turbo.json"
+        },
+        {
+            "description": "Properly await searchParams in Next.js route handlers",
+            "pattern": "searchParams\\?\\.(\\w+)",
+            "message": "In Next.js 15+, searchParams must be awaited before accessing its properties. Use 'const params = await Promise.resolve(searchParams || {});' then access properties from params."
+        }
+    ]
+}

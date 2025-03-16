@@ -1,103 +1,91 @@
-import Image from "next/image";
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { getAllPosts } from "@/lib/mdx"
+import { PostCard } from "@/components/post-card"
+import { Separator } from "@/components/ui/separator"
+import { ChatPromo } from "@/components/chat-promo"
+import { FeaturedPostCard } from "@/components/featured-post-card"
+import { ArrowRight } from "lucide-react"
 
-export default function Home() {
+export default function HomePage() {
+  const posts = getAllPosts() || []
+  const recentPosts = posts.length > 0 ? posts.slice(0, 3) : []
+  const featuredPosts = posts.length > 0 ? posts.slice(0, 2) : []
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="container py-6 md:py-16">
+      {/* Hero Section */}
+      <section className="relative pb-8 md:pb-12">
+        <div className="flex flex-col items-center text-center relative z-10">
+          <h1 className="text-4xl font-bold leading-tight tracking-tighter md:text-6xl lg:text-7xl lg:leading-[1.1] bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-foreground/70">
+            Welcome to My Little Spot on the Internet
+          </h1>
+          <p className="mt-6 max-w-[640px] text-lg text-muted-foreground sm:text-xl">
+            Building in public, sharing what I learn, and connecting the dots.
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Featured Posts Section */}
+      {featuredPosts.length > 0 && (
+        <section className="pt-4 pb-12 md:pt-8 md:pb-20">
+          <h2 className="mb-8 text-3xl font-bold tracking-tight md:text-4xl">
+            <span className="inline-block relative">
+              Featured Posts
+              <span className="absolute -bottom-2 left-0 right-0 h-1 bg-primary/50 rounded-full"></span>
+            </span>
+          </h2>
+          <div className="grid gap-8 md:grid-cols-2">
+            {featuredPosts.map((post) => (
+              <FeaturedPostCard key={post.slug} post={post} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <Separator className="my-8 md:my-16 w-full max-w-4xl mx-auto opacity-30" />
+
+      {/* Recent Posts Section */}
+      <section className="py-12 md:py-20">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            <span className="inline-block relative">
+              Recent Posts
+              <span className="absolute -bottom-2 left-0 right-0 h-1 bg-primary/50 rounded-full"></span>
+            </span>
+          </h2>
+          <Link
+            href="/blog"
+            className="text-sm font-medium text-primary flex items-center gap-1 transition-transform hover:translate-x-1"
+          >
+            View all <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {recentPosts.length > 0 ? (
+            recentPosts.map((post) => <PostCard key={post.slug} post={post} />)
+          ) : (
+            <p className="col-span-3 text-center text-muted-foreground">No posts found.</p>
+          )}
+        </div>
+        <div className="mt-12 flex justify-center">
+          <Button
+            asChild
+            className="w-full sm:w-auto group transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
+          >
+            <Link href="/blog" className="flex items-center gap-2">
+              Browse All Posts
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* Chat Promo Section */}
+      <section className="py-12 md:py-20">
+        <ChatPromo />
+      </section>
     </div>
-  );
+  )
 }
+
