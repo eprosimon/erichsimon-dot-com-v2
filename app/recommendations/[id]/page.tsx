@@ -223,11 +223,6 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
         </p>
       </div>
     
-            month: 'long',
-            day: 'numeric'
-          })}
-        </p>
-  </div>
     </div>
   )
 }
