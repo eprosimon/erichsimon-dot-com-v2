@@ -131,8 +131,8 @@ function renderMarkdown(markdown: string): string {
     .replace(/\*\*(.*)\*\*/gim, "<strong>$1</strong>")
     .replace(/\*(.*)\*/gim, "<em>$1</em>")
     // Links and images
-    .replace(/!\[(.*?)\]$$(.*?)$$/gim, '<img alt="$1" src="$2" />')
-    .replace(/\[(.*?)\]$$(.*?)$$/gim, '<a href="$2">$1</a>')
+    .replace(/!\[(.*?)\]\((.*?)\)/gim, '<img alt="$1" src="$2" />')
+    .replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2">$1</a>')
     // Lists
     .replace(/^\s*\n\*/gim, "<ul>\n*")
     .replace(/^(\*.+)\s*\n([^*])/gim, "$1\n</ul>\n\n$2")
