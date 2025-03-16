@@ -41,8 +41,9 @@ export function RecommendationsFilters({
     }
 
     // Preserve the search query if it exists
-    if (searchParams.has("query")) {
-      params.set("query", searchParams.get("query")!)
+    const query = searchParams.get("query")
+    if (query) {
+      params.set("query", query)
     }
 
     startTransition(() => {
