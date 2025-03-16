@@ -19,8 +19,15 @@ export function generateMetadata({ params }: TagPageProps): Metadata {
 }
 
 export function generateStaticParams() {
-  const posts = getAllPosts() || []
-  const tags = new Set<string>()
+  let posts = [];
+  const tags = new Set<string>();
+
+  try {
+    posts = getAllPosts() || [];
+  } catch (error) {
+    console.error("Error fetching posts for static generation:", error);
+    return [];
+  }
 
   posts.forEach((post) => {
     post.tags?.forEach((tag) => {
@@ -36,6 +43,7 @@ export function generateStaticParams() {
 export default function TagPage({ params }: TagPageProps) {
   const { tag } = params;
   let posts: Post[] = [];
+
   try {
     posts = getAllPosts() || [];
   } catch (error) {

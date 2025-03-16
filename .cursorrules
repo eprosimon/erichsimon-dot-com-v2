@@ -21,6 +21,11 @@
             "description": "Use 'tasks' instead of 'pipeline' in turbo.json",
             "pattern": "\"pipeline\"\\s*:",
             "message": "In Turbo 2.0+, use 'tasks' instead of 'pipeline' in turbo.json"
+        },
+        {
+            "description": "Properly await searchParams in Next.js route handlers",
+            "pattern": "searchParams\\?\\.(\\w+)",
+            "message": "In Next.js 15+, searchParams must be awaited before accessing its properties. Use 'const params = await Promise.resolve(searchParams || {});' then access properties from params."
         }
     ]
 }

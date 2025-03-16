@@ -4,6 +4,7 @@ import { getAllRecommendations, getAllCategories } from "@/lib/data/recommendati
 import { RecommendationsGrid } from "@/components/recommendations/grid"
 import { RecommendationsFilters } from "@/components/recommendations/filters"
 import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Recommendations | Erich Simon",
@@ -16,14 +17,16 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RecommendationsPage({
+export default async function RecommendationsPage({
   searchParams,
 }: {
   searchParams?: { query?: string; category?: string; status?: string }
 }) {
-  const query = searchParams?.query || ""
-  const categoryFilter = searchParams?.category || ""
-  const statusFilter = searchParams?.status || ""
+  // Properly await searchParams before accessing properties
+  const params = await Promise.resolve(searchParams || {});
+  const query = params.query || "";
+  const categoryFilter = params.category || "";
+  const statusFilter = params.status || "";
 
   const recommendations = getAllRecommendations()
   const categories = getAllCategories()
@@ -47,7 +50,7 @@ export default function RecommendationsPage({
         <p className="text-lg text-muted-foreground">Tools, services, and products I personally use and recommend</p>
       </div>
 
-      <Separator className="my-8" />
+      <div className="my-8 h-[1px] w-full shrink-0 bg-[hsl(var(--border))]" />
 
       <div className="flex flex-col gap-8 md:flex-row">
         <div className="md:w-1/4 animate-fade-in-up animation-delay-2">

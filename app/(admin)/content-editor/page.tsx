@@ -183,15 +183,29 @@ export default function ContentEditorPage() {
     const markdown = generateMarkdown()
     if (!markdown) return;
 
-    const blob = new Blob([markdown], { type: "text/markdown" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `${formData.slug || "content"}.md`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    try {
+      const blob = new Blob([markdown], { type: "text/markdown" })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `${formData.slug || "content"}.md`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      toast({
+        title: "Success",
+        description: "File downloaded successfully",
+        variant: "default",
+      })
+    } catch (error) {
+      console.error("Download failed:", error)
+      toast({
+        title: "Error",
+        description: "Failed to download file",
+        variant: "destructive",
+      })
+    }
   }
 
   return (

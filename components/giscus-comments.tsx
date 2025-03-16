@@ -16,9 +16,9 @@ export function GiscusComments() {
 
     const script = document.createElement("script")
     script.src = "https://giscus.app/client.js"
-    script.setAttribute("data-repo", "eprosimon/erichsimon.com") // Replace with your actual GitHub username and repo
-    script.setAttribute("data-repo-id", "R_xxxxx") // Replace with your actual repo ID from Giscus
-    script.setAttribute("data-category-id", "DIC_xxxxx") // Replace with your actual category ID from Giscus
+    script.setAttribute("data-repo", "eprosimon/erichsimon-dot-com-v2") // Your actual GitHub repo
+    script.setAttribute("data-repo-id", "R_kgDOLtXxxx") // Your actual repo ID from Giscus
+    script.setAttribute("data-category-id", "DIC_kwDOLtXxxx") // Your actual category ID from Giscus
     script.setAttribute("data-category", "Comments")
     script.setAttribute("data-mapping", "pathname")
     script.setAttribute("data-strict", "0")
@@ -43,7 +43,7 @@ export function GiscusComments() {
       }
     }
   }, [mounted, resolvedTheme])
-  }, [mounted, resolvedTheme])
+
   return <div id="giscus-comments" className="mt-6" />
 }
 

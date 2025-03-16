@@ -17,7 +17,7 @@ interface PostPageProps {
   }
 }
 
-export function generateMetadata({ params }: PostPageProps): Metadata {
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
   const post = getPostBySlug(params.slug)
 
   if (!post) {
@@ -49,7 +49,7 @@ export function generateStaticParams() {
   }))
 }
 
-export default function PostPage({ params }: PostPageProps) {
+export default async function PostPage({ params }: PostPageProps) {
   const post = getPostBySlug(params.slug)
 
   if (!post) {
@@ -110,7 +110,9 @@ export default function PostPage({ params }: PostPageProps) {
           <p className="italic text-muted-foreground">{post.excerpt}</p>
         </div>
 
-        <Separator className="my-6 md:my-8" />
+        <div className="my-6 md:my-8">
+          <Separator />
+        </div>
 
         <div className="prose max-w-none dark:prose-invert">
           <CustomMDX content={post.content} />
@@ -152,7 +154,9 @@ export default function PostPage({ params }: PostPageProps) {
         </div>
       )}
 
-      <Separator className="my-12" />
+      <div className="my-12">
+        <Separator />
+      </div>
 
       <div className="animate-fade-in-up animation-delay-10">
         <GiscusComments />

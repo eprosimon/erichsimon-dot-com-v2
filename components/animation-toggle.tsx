@@ -6,23 +6,23 @@ import { Sparkles, SparkleIcon as SparklesOff } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export function AnimationToggle() {
-  const { globalAnimationsEnabled, toggleAnimations } = useAnimationContext()
+  const { globalAnimationsEnabled } = useAnimationContext()
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon" onClick={toggleAnimations} className="rounded-full">
+          <Button variant="ghost" size="icon" className="rounded-full pointer-events-none">
             {globalAnimationsEnabled ? (
               <Sparkles className="h-[1.2rem] w-[1.2rem]" />
             ) : (
               <SparklesOff className="h-[1.2rem] w-[1.2rem]" />
             )}
-            <span className="sr-only">{globalAnimationsEnabled ? "Disable animations" : "Enable animations"}</span>
+            <span className="sr-only">{globalAnimationsEnabled ? "Animations enabled" : "Animations disabled"}</span>
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{globalAnimationsEnabled ? "Disable animations" : "Enable animations"}</p>
+          <p>{globalAnimationsEnabled ? "Animations enabled" : "Animations disabled"}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
