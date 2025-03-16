@@ -83,9 +83,11 @@ export function Navigation() {
           <Button variant="outline" size="sm" asChild className="hidden md:flex" title="RSS feed">
             <Link href="/api/rss">RSS</Link>
           </Button>
-          <MobileNav />
         </div>
       </div>
+
+      {/* Mobile Navigation - rendered outside the header */}
+      <MobileNav />
     </header>
   )
 }
