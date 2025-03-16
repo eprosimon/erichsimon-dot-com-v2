@@ -59,8 +59,8 @@ export function checkCloudflareEnv() {
 
   return {
     isConfigured,
-    accountId,
-    apiToken,
+    hasAccountId: !!accountId,
+    hasApiToken: !!apiToken,
   }
 }
 
