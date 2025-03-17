@@ -133,7 +133,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <div className="mt-12 p-6 rounded-lg border bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 animate-fade-in-up animation-delay-8">
+      <div className="mt-12 p-6 rounded-lg border bg-linear-to-br from-primary/5 via-primary/10 to-primary/5 animate-fade-in-up animation-delay-8">
         <h3 className="text-xl font-bold mb-2">Want to work together?</h3>
         <p className="text-muted-foreground mb-4">
           I'm always open to interesting collaborations and projects. If you have something in mind, don't hesitate to

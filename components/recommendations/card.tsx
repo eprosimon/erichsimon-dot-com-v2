@@ -92,7 +92,7 @@ export function RecommendationCard({ recommendation }: RecommendationCardProps) 
             <CardDescription>{recommendation.shortDescription}</CardDescription>
           </div>
           {recommendation.logo && (
-            <div className="h-10 w-10 relative flex-shrink-0">
+            <div className="h-10 w-10 relative shrink-0">
               <Image
                 src={recommendation.logo || "/placeholder.svg"}
                 alt={`${recommendation.name} logo`}
@@ -103,7 +103,7 @@ export function RecommendationCard({ recommendation }: RecommendationCardProps) 
           )}
         </div>
       </CardHeader>
-      <CardContent className="text-sm flex-grow">
+      <CardContent className="text-sm grow">
         <p>{recommendation.description}</p>
 
         {recommendation.price && (

@@ -104,7 +104,7 @@ export default async function RecommendationsPage({
             </div>
           </Suspense>
 
-          <div className="mt-12 rounded-lg border bg-card p-6 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 animate-fade-in-up animation-delay-10">
+          <div className="mt-12 rounded-lg border bg-card p-6 bg-linear-to-br from-primary/5 via-primary/10 to-primary/5 animate-fade-in-up animation-delay-10">
             <h2 className="text-xl font-semibold">Disclosure</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Some links on this page are affiliate links. If you click on them and make a purchase, I may receive a

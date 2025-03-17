@@ -31,7 +31,7 @@ export function RecommendationCard({ id }: RecommendationCardProps) {
             <CardDescription>{recommendation.shortDescription}</CardDescription>
           </div>
           {recommendation.logo && (
-            <div className="h-10 w-10 relative flex-shrink-0">
+            <div className="h-10 w-10 relative shrink-0">
               <Image
                 src={recommendation.logo || "/placeholder.svg"}
                 alt={`${recommendation.name} logo`}

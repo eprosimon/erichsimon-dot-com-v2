@@ -23,7 +23,7 @@ export default function ChatDevPage() {
 
       <h1 className="mb-6 text-3xl font-bold tracking-tight md:text-4xl">Chat Development</h1>
 
-      <div className="border rounded-lg shadow-sm p-4 md:p-6">
+      <div className="border rounded-lg shadow-2xs p-4 md:p-6">
         <CustomChatInterface />
       </div>
     </div>

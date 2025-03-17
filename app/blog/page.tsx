@@ -71,7 +71,7 @@ export default function BlogPage() {
                       {formatDate(post.date)}
                     </time>
                   </CardHeader>
-                  <CardContent className="flex-grow">
+                  <CardContent className="grow">
                     <div className="space-y-3">
                       <p className="font-medium text-muted-foreground">{post.excerpt}</p>
                       <div className="prose prose-sm dark:prose-invert line-clamp-3 text-muted-foreground/80">

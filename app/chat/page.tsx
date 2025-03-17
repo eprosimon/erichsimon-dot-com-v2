@@ -65,7 +65,7 @@ export default function ChatPage() {
 
       <Separator className="my-12" />
 
-      <div className="mx-auto max-w-2xl rounded-lg border bg-card p-8 shadow-sm">
+      <div className="mx-auto max-w-2xl rounded-lg border bg-card p-8 shadow-2xs">
         <div className="flex items-center justify-center mb-6">
           <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
             <Bot className="h-8 w-8 text-primary" />

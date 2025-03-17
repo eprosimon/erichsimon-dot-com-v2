@@ -3,7 +3,7 @@ import { Github, Rss } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="border-t py-12 md:py-16 bg-gradient-to-b from-background to-muted/30">
+    <footer className="border-t py-12 md:py-16 bg-linear-to-b from-background to-muted/30">
       <div className="container flex flex-col items-center justify-between gap-8 md:flex-row">
         <div className="flex flex-col items-center md:items-start">
           <Link href="/" className="text-xl font-bold tracking-tight hover:text-primary transition-colors">

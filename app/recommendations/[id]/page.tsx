@@ -104,7 +104,7 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
         Back to all recommendations
       </Link>
 
-      <div className="bg-card rounded-lg border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-lg border shadow-2xs overflow-hidden">
         <div className="p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-6 md:items-start">
             {recommendation.logo && (
