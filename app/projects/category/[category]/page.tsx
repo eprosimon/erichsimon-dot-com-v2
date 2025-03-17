@@ -108,7 +108,7 @@ export default function ProjectCategoryPage({ params }: CategoryPageProps) {
                 </CardTitle>
                 <CardDescription>{project.category}</CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow">
+              <CardContent className="grow">
                 <p className="line-clamp-3 text-sm">{project.excerpt}</p>
               </CardContent>
               <CardFooter className="flex flex-wrap items-center gap-2 border-t pt-4">

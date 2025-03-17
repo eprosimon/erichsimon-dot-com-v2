@@ -72,7 +72,7 @@ export default function ReviewsPage() {
                 fill
                 className="object-cover transition-transform duration-500 hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
             </div>
             <CardHeader className="pb-2">
               <div className="flex items-center gap-1 mb-2">
@@ -97,7 +97,7 @@ export default function ReviewsPage() {
               </CardTitle>
               <CardDescription>{review.productName}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow">
+            <CardContent className="grow">
               <p className="line-clamp-3 text-sm">{review.excerpt}</p>
             </CardContent>
             <CardFooter className="flex flex-wrap items-center gap-2 border-t pt-4">
@@ -137,7 +137,7 @@ export default function ReviewsPage() {
 
       <Separator className="my-12" />
 
-      <div className="rounded-lg border bg-card p-6 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 animate-fade-in-up animation-delay-12">
+      <div className="rounded-lg border bg-card p-6 bg-linear-to-br from-primary/5 via-primary/10 to-primary/5 animate-fade-in-up animation-delay-12">
         <h2 className="text-xl font-semibold">Review Policy</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           I only review products and services that I've personally used. All opinions are my own and based on real-world

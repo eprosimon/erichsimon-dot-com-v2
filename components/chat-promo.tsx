@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button"
 
 export function ChatPromo() {
   return (
-    <Card className="bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border-primary/20 overflow-hidden relative">
+    <Card className="bg-linear-to-br from-primary/5 via-primary/10 to-primary/5 border-primary/20 overflow-hidden relative">
       <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-2xl">
           <Bot className="h-6 w-6 text-primary" />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+          <span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-primary/70">
             Chat with My Content
           </span>
           <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">Coming Soon</span>

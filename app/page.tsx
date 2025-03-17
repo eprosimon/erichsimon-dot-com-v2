@@ -17,7 +17,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative pb-8 md:pb-12">
         <div className="flex flex-col items-center text-center relative z-10">
-          <h1 className="text-4xl font-bold leading-tight tracking-tighter md:text-6xl lg:text-7xl lg:leading-[1.1] bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-foreground/70">
+          <h1 className="text-4xl font-bold leading-tight tracking-tighter md:text-6xl lg:text-7xl lg:leading-[1.1] bg-clip-text text-transparent bg-linear-to-r from-foreground via-foreground to-foreground/70">
             Welcome to My Little Spot on the Internet
           </h1>
           <p className="mt-6 max-w-[640px] text-lg text-muted-foreground sm:text-xl">

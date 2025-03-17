@@ -90,7 +90,7 @@ export default function ProjectsPage() {
                 fill
                 className="object-cover transition-transform duration-500 hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
             </div>
             <CardHeader className="pb-2">
               <CardTitle className="line-clamp-2 group">
@@ -100,7 +100,7 @@ export default function ProjectsPage() {
               </CardTitle>
               <CardDescription>{project.category}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow">
+            <CardContent className="grow">
               <p className="line-clamp-3 text-sm">{project.excerpt}</p>
             </CardContent>
             <CardFooter className="flex flex-wrap items-center gap-2 border-t pt-4">
