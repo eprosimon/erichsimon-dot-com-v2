@@ -2,7 +2,9 @@ import { NextResponse } from "next/server"
 import { callCloudflareAI, checkCloudflareEnv } from "@/lib/cloudflare-ai"
 
 export async function POST(_req: Request) {
-  console.log("Testing Cloudflare AI connection")
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Testing Cloudflare AI connection")
+  }
 
   try {
     // Check environment variables
@@ -37,12 +39,16 @@ export async function POST(_req: Request) {
 
     // Call Cloudflare AI directly
     try {
-      console.log("Making test call to Cloudflare AI")
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Making test call to Cloudflare AI")
+      }
       const result = await callCloudflareAI(testMessages, false)
 
-      console.log("Test call successful:", {
-        result: result ? "✓ Received" : "✗ Empty",
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Test call successful:", {
+          result: result ? "✓ Received" : "✗ Empty",
+        })
+      }
 
       return NextResponse.json({
         success: true,

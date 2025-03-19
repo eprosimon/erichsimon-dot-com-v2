@@ -26,22 +26,24 @@ export function ChatInterface() {
   const { messages, handleInputChange, handleSubmit, isLoading, error } = useChat({
     api: "/api/chat",
     onResponse: (response: Response) => {
-      // Log the raw response for debugging
-      console.log("Chat Response:", {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        contentType: response.headers.get("Content-Type"),
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Chat Response:", {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          contentType: response.headers.get("Content-Type"),
+        })
+      }
     },
     onError: (error: Error) => {
-      // Log detailed error information
-      console.error("Chat Error:", {
-        message: error.message,
-        name: error.name,
-        stack: error.stack,
-        cause: error.cause,
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.error("Chat Error:", {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+          cause: error.cause,
+        })
+      }
     },
   })
 
@@ -69,7 +71,9 @@ export function ChatInterface() {
   const testConnection = async () => {
     setTestStatus({ loading: true })
     try {
-      console.log("Testing connection to chat API")
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Testing connection to chat API")
+      }
       const response = await fetch("/api/chat/test", {
         method: "POST",
         headers: {
@@ -78,16 +82,20 @@ export function ChatInterface() {
         body: JSON.stringify({}),
       })
 
-      console.log("Test response received:", {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        contentType: response.headers.get("Content-Type"),
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Test response received:", {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          contentType: response.headers.get("Content-Type"),
+        })
+      }
 
       // Get the raw response text
       const responseText = await response.text()
-      console.log("Raw response text:", responseText)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Raw response text:", responseText)
+      }
 
       // Check if the response is JSON or plain text
       const contentType = response.headers.get("Content-Type") || ""

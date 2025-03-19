@@ -60,11 +60,13 @@ export function CustomChatInterface() {
         }),
       })
 
-      console.log("Chat API response:", {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Chat API response:", {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+        })
+      }
 
       if (!response.ok) {
         const errorText = await response.text()
@@ -92,7 +94,9 @@ export function CustomChatInterface() {
   const testConnection = async () => {
     setTestStatus({ loading: true })
     try {
-      console.log("Testing connection to chat API")
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Testing connection to chat API")
+      }
       const response = await fetch("/api/chat/test", {
         method: "POST",
         headers: {
@@ -101,16 +105,20 @@ export function CustomChatInterface() {
         body: JSON.stringify({}),
       })
 
-      console.log("Test response received:", {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        contentType: response.headers.get("Content-Type"),
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Test response received:", {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          contentType: response.headers.get("Content-Type"),
+        })
+      }
 
       // Get the raw response text
       const responseText = await response.text()
-      console.log("Raw response text:", responseText)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Raw response text:", responseText)
+      }
 
       // Check if the response is JSON or plain text
       const contentType = response.headers.get("Content-Type") || ""

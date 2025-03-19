@@ -5,7 +5,9 @@ import { callCloudflareAI, checkCloudflareEnv } from "@/lib/cloudflare-ai"
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-  console.log("Chat API request received")
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Chat API request received")
+  }
 
   try {
     // Parse the request body
@@ -13,10 +15,12 @@ export async function POST(req: Request) {
     try {
       const body = await req.json()
       messages = body.messages
-      console.log("Request parsed successfully:", {
-        messageCount: messages?.length || 0,
-        lastMessage: messages?.length > 0 ? messages[messages.length - 1]?.content?.substring(0, 50) + "..." : "None",
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Request parsed successfully:", {
+          messageCount: messages?.length || 0,
+          lastMessage: messages?.length > 0 ? messages[messages.length - 1]?.content?.substring(0, 50) + "..." : "None",
+        })
+      }
     } catch (parseError) {
       console.error("Failed to parse request body:", parseError)
       return NextResponse.json(
@@ -56,13 +60,17 @@ export async function POST(req: Request) {
 
     // Call Cloudflare AI directly
     try {
-      console.log("Calling Cloudflare AI for chat response")
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Calling Cloudflare AI for chat response")
+      }
       const result = await callCloudflareAI(messages, false)
-      console.log("Cloudflare AI response received:", {
-        success: result?.success,
-        hasResponse: !!result?.result?.response,
-        responseLength: result?.result?.response?.length || 0,
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Cloudflare AI response received:", {
+          success: result?.success,
+          hasResponse: !!result?.result?.response,
+          responseLength: result?.result?.response?.length || 0,
+        })
+      }
 
       // Get the response content
       const responseContent = result.result?.response || "No response from Cloudflare AI"

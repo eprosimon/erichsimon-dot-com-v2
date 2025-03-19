@@ -46,3 +46,12 @@ next-env.d.ts
 
 # build outputs
 dist/
+
+# ide and os specific
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+Thumbs.db
