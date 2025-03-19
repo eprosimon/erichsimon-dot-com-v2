@@ -12,13 +12,14 @@ import { generatePostStructuredData } from "@/lib/structured-data"
 import { Button } from "@/components/ui/button"
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const post = getPostBySlug(params.slug)
+  const { slug } = await params;
+  const post = getPostBySlug(slug)
 
   if (!post) {
     return {
@@ -50,7 +51,8 @@ export function generateStaticParams() {
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = getPostBySlug(params.slug)
+  const { slug } = await params;
+  const post = getPostBySlug(slug)
 
   if (!post) {
     notFound()

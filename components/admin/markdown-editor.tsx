@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Bold, Italic, List, ListOrdered, LinkIcon, Image, Code, Heading1, Heading2, Heading3 } from "lucide-react"
+import { Bold, Italic, List, ListOrdered, LinkIcon, Image as ImageIcon, Code, Heading1, Heading2, Heading3 } from "lucide-react"
 
 interface MarkdownEditorProps {
   id: string
@@ -88,7 +88,7 @@ export function MarkdownEditor({ id, value, onChange }: MarkdownEditorProps) {
               <LinkIcon className="h-4 w-4" />
             </Button>
             <Button variant="ghost" size="icon" onClick={handleImage} title="Image">
-              <Image className="h-4 w-4" />
+              <ImageIcon className="h-4 w-4" />
             </Button>
             <Button variant="ghost" size="icon" onClick={handleCode} title="Code Block">
               <Code className="h-4 w-4" />

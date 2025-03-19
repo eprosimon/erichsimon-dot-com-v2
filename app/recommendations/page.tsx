@@ -3,8 +3,6 @@ import { Suspense } from "react"
 import { getAllRecommendations, getAllCategories } from "@/lib/data/recommendations"
 import { RecommendationsGrid } from "@/components/recommendations/grid"
 import { RecommendationsFilters } from "@/components/recommendations/filters"
-import { Separator } from "@/components/ui/separator"
-import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Recommendations | Erich Simon",
@@ -20,10 +18,18 @@ export const metadata: Metadata = {
 export default async function RecommendationsPage({
   searchParams,
 }: {
-  searchParams?: { query?: string; category?: string; status?: string }
+  searchParams?: Promise<{
+    query?: string;
+    category?: string;
+    status?: string
+  }>
 }) {
   // Properly await searchParams before accessing properties
-  const params = await Promise.resolve(searchParams || {});
+  const params = await Promise.resolve(searchParams || Promise.resolve({
+    query: undefined,
+    category: undefined,
+    status: undefined
+  }));
   const query = params.query || "";
   const categoryFilter = params.category || "";
   const statusFilter = params.status || "";

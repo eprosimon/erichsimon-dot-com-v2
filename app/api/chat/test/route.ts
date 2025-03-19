@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { callCloudflareAI, checkCloudflareEnv } from "@/lib/cloudflare-ai"
 
-export async function POST(req: Request) {
+export async function POST(_req: Request) {
   console.log("Testing Cloudflare AI connection")
 
   try {
@@ -15,8 +15,8 @@ export async function POST(req: Request) {
           error: "Cloudflare environment variables are not properly configured",
           environmentCheck: {
             isConfigured: envCheck.isConfigured,
-            accountId: envCheck.accountId ? "✓ Set" : "✗ Missing",
-            apiToken: envCheck.apiToken ? "✓ Set" : "✗ Missing",
+            accountId: envCheck.hasAccountId ? "✓ Set" : "✗ Missing",
+            apiToken: envCheck.hasApiToken ? "✓ Set" : "✗ Missing",
           },
         },
         { status: 500 },

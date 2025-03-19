@@ -5,5 +5,6 @@ export interface Post {
   date: string
   excerpt: string
   tags: string[]
+  coverImage?: string
 }
 

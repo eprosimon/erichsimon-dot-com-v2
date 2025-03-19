@@ -1,43 +1,18 @@
-let userConfig = undefined
-try {
-  userConfig = await import('./v0-user-next.config')
-} catch (e) {
-  // ignore error
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
-  }
-}
+    reactStrictMode: true,
+    compiler: {
+        // Enable React compiler (correct syntax for Next.js 15+)
+        reactRemoveProperties: process.env.NODE_ENV === 'production',
+    },
+    // Allow images from trusted domains
+    images: {
+        domains: [
+            'images.unsplash.com',
+            'cdn.sanity.io',
+            'lh3.googleusercontent.com',
+        ],
+    },
+};
 
-mergeConfig(nextConfig, userConfig)
-
-function mergeConfig(nextConfig, userConfig) {
-  if (!userConfig) {
-    return
-  }
-
-  for (const key in userConfig) {
-    if (
-      typeof nextConfig[key] === 'object' &&
-      !Array.isArray(nextConfig[key])
-    ) {
-      nextConfig[key] = {
-        ...nextConfig[key],
-        ...userConfig[key],
-      }
-    } else {
-      nextConfig[key] = userConfig[key]
-    }
-  }
-}
-
-export default nextConfig
+export default nextConfig; 

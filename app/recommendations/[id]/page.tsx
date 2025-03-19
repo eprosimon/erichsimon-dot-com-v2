@@ -10,13 +10,14 @@ import { Button } from "@/components/ui/button"
 import { RecommendationCard } from "@/components/recommendations/card"
 
 interface RecommendationPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: RecommendationPageProps): Promise<Metadata> {
-  const recommendation = getRecommendationById(params.id)
+  const { id } = await params;
+  const recommendation = getRecommendationById(id)
 
   if (!recommendation) {
     return {
@@ -37,14 +38,15 @@ export async function generateMetadata({ params }: RecommendationPageProps): Pro
   }
 }
 
-export default function RecommendationPage({ params }: RecommendationPageProps) {
-  const recommendation = getRecommendationById(params.id)
+export default async function RecommendationPage({ params }: RecommendationPageProps) {
+  const { id } = await params;
+  const recommendation = getRecommendationById(id)
 
   if (!recommendation) {
     notFound()
   }
 
-  const relatedRecommendations = getRelatedRecommendations(params.id)
+  const relatedRecommendations = getRelatedRecommendations(id)
   const linkUrl = recommendation.affiliateUrl || recommendation.url
 
   // Status badge configuration
@@ -109,15 +111,15 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
           <div className="flex flex-col md:flex-row gap-6 md:items-start">
             {recommendation.logo && (
               <div className="w-24 h-24 relative mx-auto md:mx-0">
-                <Image 
-                  src={recommendation.logo || "/placeholder.svg"} 
-                  alt={`${recommendation.name} logo`} 
-                  fill 
-                  className="object-contain" 
+                <Image
+                  src={recommendation.logo || "/placeholder.svg"}
+                  alt={`${recommendation.name} logo`}
+                  fill
+                  className="object-contain"
                 />
               </div>
             )}
-            
+
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <h1 className="text-3xl font-bold">{recommendation.name}</h1>
@@ -125,9 +127,9 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
                   {status.label}
                 </Badge>
               </div>
-              
+
               <p className="text-lg text-muted-foreground mb-4">{recommendation.shortDescription}</p>
-              
+
               <div className="flex flex-wrap gap-2 mb-4">
                 {recommendation.tags?.map((tag) => (
                   <Badge key={tag} variant="secondary">
@@ -135,13 +137,13 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
                   </Badge>
                 ))}
               </div>
-              
+
               {recommendation.price && (
                 <div className="mb-4">
                   <span className="text-lg font-medium">Price: {formatPrice()}</span>
                 </div>
               )}
-              
+
               {linkUrl && (
                 <div className="flex gap-2">
                   <Button asChild>
@@ -159,13 +161,13 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
             </div>
           </div>
         </div>
-        
+
         <Separator />
-        
+
         <div className="p-6 md:p-8">
           <h2 className="text-xl font-bold mb-4">About {recommendation.name}</h2>
           <p className="mb-6">{recommendation.description}</p>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             {recommendation.pros && recommendation.pros.length > 0 && (
               <div>
@@ -180,7 +182,7 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
                 </ul>
               </div>
             )}
-            
+
             {recommendation.cons && recommendation.cons.length > 0 && (
               <div>
                 <h3 className="font-semibold mb-2">Cons</h3>
@@ -197,7 +199,7 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
           </div>
         </div>
       </div>
-      
+
       {relatedRecommendations.length > 0 && (
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Related Recommendations</h2>
@@ -208,21 +210,21 @@ export default function RecommendationPage({ params }: RecommendationPageProps) 
           </div>
         </div>
       )}
-      
+
       <div className="mt-12 rounded-lg border bg-card p-6">
         <h2 className="text-xl font-semibold">Disclosure</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Some links on this page are affiliate links. If you click on them and make a purchase, I may receive a small commission at no additional cost to you. I only recommend products and services I personally use and believe in.
         </p>
         <p className="mt-4 text-sm">
-          <strong>Last updated:</strong> {new Date(recommendation.updatedAt).toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+          <strong>Last updated:</strong> {new Date(recommendation.updatedAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
           })}
         </p>
       </div>
-    
+
     </div>
   )
 }

@@ -14,13 +14,14 @@ import { GiscusComments } from "@/components/giscus-comments"
 import { generateReviewStructuredData } from "@/lib/structured-data"
 
 interface ReviewPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: ReviewPageProps): Promise<Metadata> {
-  const review = getReviewBySlug(params.slug)
+  const { slug } = await params;
+  const review = getReviewBySlug(slug)
 
   if (!review) {
     return {
@@ -57,8 +58,9 @@ export function generateStaticParams() {
   }))
 }
 
-export default function ReviewPage({ params }: ReviewPageProps) {
-  const review = getReviewBySlug(params.slug)
+export default async function ReviewPage({ params }: ReviewPageProps) {
+  const { slug } = await params;
+  const review = getReviewBySlug(slug)
 
   if (!review) {
     notFound()
@@ -70,14 +72,14 @@ export default function ReviewPage({ params }: ReviewPageProps) {
 
   return (
     <div className="container max-w-4xl py-6 md:py-16">
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData)
             .replace(/</g, '\\u003c')
             .replace(/>/g, '\\u003e')
             .replace(/&/g, '\\u0026')
-        }} 
+        }}
       />
 
       <Link
@@ -104,13 +106,12 @@ export default function ReviewPage({ params }: ReviewPageProps) {
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`h-5 w-5 ${
-                  i < Math.floor(review.rating)
+                className={`h-5 w-5 ${i < Math.floor(review.rating)
                     ? "fill-primary text-primary"
                     : i < review.rating
                       ? "fill-primary/50 text-primary"
                       : "fill-muted text-muted"
-                }`}
+                  }`}
               />
             ))}
           </div>

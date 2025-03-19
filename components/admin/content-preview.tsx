@@ -1,22 +1,21 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { useMemo } from "react"
 
 interface ContentPreviewProps {
-  type: string
-  data: any
+  _type: string
+  _data: any
   markdown: string
 }
 
-export function ContentPreview({ type, data, markdown }: ContentPreviewProps) {
+export function ContentPreview({ _type, _data, markdown }: ContentPreviewProps) {
   // Split the markdown into frontmatter and content
-  const parts = useMemo(() => markdown.split("---\n\n"), [markdown])
-  const frontmatter = useMemo(() => parts[0].replace("---\n", ""), [parts])
-  const content = useMemo(() => parts[1] || "", [parts])
+  const parts = markdown.split("---\n\n")
+  const frontmatter = parts[0].replace("---\n", "")
+  const content = parts[1] || ""
 
-  // Memoize the rendered HTML to prevent unnecessary re-renders
-  const renderedContent = useMemo(() => renderMarkdown(content), [content])
+  // Parse the content
+  const renderedContent = renderMarkdown(content)
 
   return (
     <div className="space-y-6">

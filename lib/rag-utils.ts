@@ -105,7 +105,7 @@ export function chunkText(text: string, maxChunkSize = 1000): string[] {
 }
 
 // Placeholder for future vector search function
-export async function searchSimilarContent(query: string, topK = 3): Promise<Document[]> {
+export async function searchSimilarContent(query: string): Promise<Document[]> {
   // This will be implemented later when we have vector embeddings
   console.log("Searching for content similar to:", query)
   return []

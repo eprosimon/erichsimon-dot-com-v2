@@ -49,8 +49,8 @@ export function useAnimationControl(pageId: string, options: AnimationControlOpt
         const navEntries = performance.getEntriesByType("navigation")
         const isRefresh =
           navEntries.length > 0 &&
-          (navEntries[0].type === "reload" ||
-            navEntries[0].type === "back_forward" ||
+          ((navEntries[0] as PerformanceNavigationTiming).type === "reload" ||
+            (navEntries[0] as PerformanceNavigationTiming).type === "back_forward" ||
             document.visibilityState === "visible")
 
         if (isRefresh) {

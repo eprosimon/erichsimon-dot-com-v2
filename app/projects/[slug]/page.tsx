@@ -9,13 +9,14 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
-  const project = getProjectBySlug(params.slug)
+  const { slug } = await params;
+  const project = getProjectBySlug(slug)
 
   if (!project) {
     return {
@@ -52,8 +53,9 @@ export function generateStaticParams() {
   }))
 }
 
-export default function ProjectPage({ params }: ProjectPageProps) {
-  const project = getProjectBySlug(params.slug)
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug)
 
   if (!project) {
     notFound()
@@ -139,7 +141,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
       <h2 className="text-2xl font-bold mb-6">Project Posts</h2>
 
       <div className="space-y-6">
-        {projectPosts.map((post, index) => (
+        {projectPosts.filter(post => post !== null).map((post, index) => (
           <Card key={post.slug} className="overflow-hidden">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
