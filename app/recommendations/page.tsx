@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
-import { getAllRecommendations, getAllCategories } from "@/lib/data/recommendations"
+import { getAllRecommendations, getAllRecommendationCategories } from "@/lib/content"
 import { RecommendationsGrid } from "@/components/recommendations/grid"
 import { RecommendationsFilters } from "@/components/recommendations/filters"
 
@@ -35,7 +35,7 @@ export default async function RecommendationsPage({
   const statusFilter = params.status || "";
 
   const recommendations = getAllRecommendations()
-  const categories = getAllCategories()
+  const categories = getAllRecommendationCategories()
 
   // Available statuses for filtering
   const statuses = [

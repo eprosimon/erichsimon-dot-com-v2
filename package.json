@@ -8,10 +8,12 @@
   "packageManager": "pnpm@8.15.4",
   "scripts": {
     "dev": "next dev --turbo",
+    "dev:drafts": "NEXT_PUBLIC_INCLUDE_DRAFTS=true next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "turbo:dev": "turbo dev",
+    "turbo:dev:drafts": "NEXT_PUBLIC_INCLUDE_DRAFTS=true turbo dev",
     "turbo:build": "turbo build",
     "turbo:lint": "turbo lint"
   },

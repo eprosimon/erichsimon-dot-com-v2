@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import { Star, Filter } from "lucide-react"
-import { getAllReviews, getAllReviewCategories } from "@/lib/data/reviews"
+import { getAllReviews, getAllReviewCategories } from "@/lib/content"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -43,9 +43,9 @@ export default function ReviewsPage() {
           All Reviews
         </Button>
         {categories.map((category) => (
-          <Button 
-            key={category} 
-            variant="outline" 
+          <Button
+            key={category}
+            variant="outline"
             className="hover:bg-primary/5"
             asChild
           >
@@ -79,13 +79,12 @@ export default function ReviewsPage() {
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-4 w-4 ${
-                      i < Math.floor(review.rating)
-                        ? "fill-primary text-primary"
-                        : i < review.rating
-                          ? "fill-primary/50 text-primary"
-                          : "fill-muted text-muted"
-                    }`}
+                    className={`h-4 w-4 ${i < Math.floor(review.rating)
+                      ? "fill-primary text-primary"
+                      : i < review.rating
+                        ? "fill-primary/50 text-primary"
+                        : "fill-muted text-muted"
+                      }`}
                   />
                 ))}
                 <span className="ml-1 text-sm font-medium">{review.rating.toFixed(1)}</span>

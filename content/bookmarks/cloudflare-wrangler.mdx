@@ -1,0 +1,62 @@
+---
+id: "cloudflare-wrangler"
+title: "Cloudflare Wrangler CLI"
+url: "https://developers.cloudflare.com/workers/wrangler/get-started/"
+excerpt: "The official CLI tool for developing and deploying Cloudflare Workers"
+category: "Developer Tools"
+tags: ["cloudflare", "cli", "serverless", "developer"]
+bookmarkType: "tool"
+screenshot: "/placeholder.svg?height=600&width=1200"
+publishedAt: "2024-03-20"
+updatedAt: "2024-03-20"
+featured: true
+---
+
+# Cloudflare Wrangler CLI
+
+Wrangler is the official CLI tool for Cloudflare Workers, making it easy to develop, test, and deploy serverless functions directly to Cloudflare's edge network.
+
+## Why it's bookmarked
+
+I use Wrangler regularly for my serverless projects on Cloudflare. It provides a seamless development experience with features like:
+
+- Local development environment that mimics the Workers runtime
+- Simple deployment commands
+- Easy management of KV namespaces, Durable Objects and other Worker resources
+- Built-in secret management
+- Typescript support out of the box
+
+## Getting started
+
+Install Wrangler via npm:
+
+```bash
+npm install -g wrangler
+```
+
+Then authenticate with your Cloudflare account:
+
+```bash
+wrangler login
+```
+
+Create a new Worker project:
+
+```bash
+wrangler init my-worker
+```
+
+## Useful commands
+
+Some of the most useful Wrangler commands:
+
+- `wrangler dev`: Start a local development server
+- `wrangler publish`: Deploy your Worker to Cloudflare
+- `wrangler secret put KEY`: Add a secret to your Worker
+- `wrangler kv:namespace create NAME`: Create a KV namespace
+
+## Related links
+
+- [Cloudflare Workers documentation](https://developers.cloudflare.com/workers/)
+- [Workers Examples Repository](https://github.com/cloudflare/workers-sdk/tree/main/templates)
+- [Hono Framework](https://hono.dev/) - Great framework for building Workers 

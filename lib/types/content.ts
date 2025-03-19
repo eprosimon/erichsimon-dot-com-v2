@@ -70,3 +70,20 @@ export type Project = {
   lastPostDate: string // Date of the most recent post
 }
 
+export type Bookmark = {
+  id: string
+  slug?: string
+  title: string
+  url: string
+  excerpt: string
+  category: string
+  tags: string[]
+  bookmarkType: "tool" | "article" | "video" | "library" | "resource" | "other"
+  screenshot?: string
+  publishedAt: string
+  updatedAt: string
+  featured?: boolean
+  content?: string
+  isDraft?: boolean
+}
+
