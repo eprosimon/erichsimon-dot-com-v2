@@ -1,15 +1,45 @@
 "use client"
 
-import { searchRecommendations } from "@/lib/data/recommendations"
 import { RecommendationCard } from "@/components/recommendations/card"
-import type { Recommendation } from "@/lib/types/content"
 import { motion } from "framer-motion"
+import { getRecommendations } from "@/lib/recommendations"
+import type { Recommendation as BaseRecommendation } from "@/lib/recommendations"
+import type { Recommendation, RecommendationStatus } from "@/lib/types/content"
 
 interface RecommendationsGridProps {
   recommendations: Recommendation[]
   query: string
   category: string
   status: string
+}
+
+// Helper function to search recommendations
+function searchRecommendations(query: string): Recommendation[] {
+  const searchTerm = query.toLowerCase()
+  const allRecommendations = getRecommendations()
+  const result: Recommendation[] = []
+
+  for (const categoryName in allRecommendations) {
+    const matches = allRecommendations[categoryName].filter(
+      (rec) =>
+        rec.name.toLowerCase().includes(searchTerm) ||
+        rec.description.toLowerCase().includes(searchTerm) ||
+        rec.shortDescription.toLowerCase().includes(searchTerm) ||
+        (rec.tags && rec.tags.some((tag) => tag.toLowerCase().includes(searchTerm)))
+    )
+
+    // Convert BaseRecommendation to Recommendation by adding required properties
+    matches.forEach(rec => {
+      result.push({
+        ...rec,
+        category: categoryName,
+        status: "current" as RecommendationStatus,
+        tags: rec.tags || []
+      });
+    });
+  }
+
+  return result;
 }
 
 export function RecommendationsGrid({ recommendations, query, category, status }: RecommendationsGridProps) {
@@ -24,7 +54,7 @@ export function RecommendationsGrid({ recommendations, query, category, status }
     filteredRecommendations = filteredRecommendations.filter((rec) => rec.category === category)
   }
 
-  if (status) {
+  if (status && status !== "all") {
     filteredRecommendations = filteredRecommendations.filter((rec) => rec.status === status)
   }
 

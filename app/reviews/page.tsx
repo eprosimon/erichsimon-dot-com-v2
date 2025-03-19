@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import { Star } from "lucide-react"
-import { getAllReviews, getAllReviewCategories } from "@/lib/content"
+import { getAllReviews } from "@/lib/content"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -44,7 +44,6 @@ export default async function ReviewsPage({
   const selectedTags = tagFilter ? tagFilter.split(',') : [];
 
   const reviews = getAllReviews()
-  const categories = getAllReviewCategories()
 
   // Get all unique tags from reviews
   const allTags: string[] = []

@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { ArrowRight, ExternalLink } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { getRecommendationById } from "@/lib/data/recommendations"
+import { getRecommendationById, type Recommendation } from "@/lib/recommendations"
+import { cn } from "@/lib/utils"
 
 interface RecommendationCalloutProps {
   id: string
@@ -15,38 +16,18 @@ export function RecommendationCallout({ id, title }: RecommendationCalloutProps)
     return null
   }
 
-  const linkUrl = recommendation.affiliateUrl || recommendation.url
-  const isAffiliate = !!recommendation.affiliateUrl
+  // We need to check if the URL exists
+  const linkUrl = recommendation.url
 
-  // Status badge configuration
-  const statusConfig = {
-    current: {
-      label: "Currently Using",
-      color: "text-green-600 dark:text-green-400",
-    },
-    previous: {
-      label: "Previously Used",
-      color: "text-blue-600 dark:text-blue-400",
-    },
-    heard: {
-      label: "Heard Good Things",
-      color: "text-yellow-600 dark:text-yellow-400",
-    },
-    // Fallback for any other status values
-    default: {
-      label: "Recommended",
-      color: "text-gray-600 dark:text-gray-400",
-    },
-  }
-
-  // Safely access the status config with a fallback
-  const status = statusConfig[recommendation.status] || statusConfig.default
+  // Simplified status display since the recommendations.ts doesn't have status
+  const statusLabel = "Recommended"
+  const statusColor = "text-green-600 dark:text-green-400"
 
   return (
     <Alert className="my-6 border-primary/20 bg-primary/5">
       <AlertTitle className="text-primary flex items-center gap-2">
         {title || `Recommended: ${recommendation.name}`}
-        <span className={`text-sm font-normal ${status.color}`}>{status.label}</span>
+        <span className={cn("text-sm font-normal", statusColor)}>{statusLabel}</span>
       </AlertTitle>
       <AlertDescription className="mt-2">
         <p>{recommendation.shortDescription}</p>
@@ -65,7 +46,6 @@ export function RecommendationCallout({ id, title }: RecommendationCalloutProps)
               className="text-sm font-medium text-primary hover:underline flex items-center"
             >
               Visit website <ExternalLink className="ml-1 h-3 w-3" />
-              {isAffiliate && <span className="ml-1 text-xs text-muted-foreground">(affiliate link)</span>}
             </Link>
           )}
         </div>

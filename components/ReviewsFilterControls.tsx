@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { ReviewStatusPicker } from "./ReviewStatusPicker"
 import { ContentTagDropdown } from "./ContentTagDropdown"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -20,13 +19,14 @@ export function ReviewsFilterControls({ availableTags }: ReviewsFilterControlsPr
 
     const currentStatus = searchParams.get("status") || ""
     const currentTagParam = searchParams.get("tag") || ""
-    const parsedTags = currentTagParam ? currentTagParam.split(',') : []
 
     const [selectedStatus, setSelectedStatus] = useState<string>(currentStatus)
-    const [selectedTags, setSelectedTags] = useState<string[]>(parsedTags)
+    const [selectedTags, setSelectedTags] = useState<string[]>([])
 
+    // Update state when URL params change
     useEffect(() => {
         setSelectedStatus(currentStatus)
+        const parsedTags = currentTagParam ? currentTagParam.split(',') : []
         setSelectedTags(parsedTags)
     }, [currentStatus, currentTagParam])
 
