@@ -15,7 +15,7 @@ import { RecommendationCard } from "./recommendation-card"
 interface CustomLinkProps {
   href: string;
   children: ReactNode;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 function CustomLink({ href, children, ...props }: CustomLinkProps) {
@@ -54,7 +54,7 @@ function ResponsiveImage({ src, alt = "" }: ResponsiveImageProps) {
 interface CustomListProps {
   children: ReactNode;
   ordered?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 function CustomList({ children, ordered, ...props }: CustomListProps) {
@@ -94,18 +94,18 @@ export function CustomMDX({ content }: CustomMDXProps) {
     <ReactMarkdown
       rehypePlugins={[rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }]]}
       components={{
-        a: CustomLink as any,
-        img: ResponsiveImage as any,
-        ul: CustomList as any,
-        ol: CustomList as any,
-        li: (props: any) => {
+        a: CustomLink as React.ComponentType<React.ComponentProps<'a'>>,
+        img: ResponsiveImage as React.ComponentType<React.ComponentProps<'img'>>,
+        ul: CustomList as React.ComponentType<React.ComponentProps<'ul'>>,
+        ol: CustomList as React.ComponentType<React.ComponentProps<'ol'>>,
+        li: (props: React.ComponentProps<'li'> & { checked?: boolean }) => {
           const { className, checked, children } = props
           if (className?.includes("task-list-item")) {
             return <TaskListItem isChecked={checked}>{children}</TaskListItem>
           }
           return <li {...props}>{children}</li>
         },
-        code: (props: any) => {
+        code: (props: React.ComponentProps<'code'> & { inline?: boolean }) => {
           const { className, inline, children } = props
           const match = /language-(\w+)/.exec(className || "")
 
@@ -119,7 +119,12 @@ export function CustomMDX({ content }: CustomMDXProps) {
 
           return (
             <div className="relative">
-              <SyntaxHighlighter style={dracula} language={match ? match[1] : "text"} PreTag="div" {...props}>
+              <SyntaxHighlighter
+                style={dracula}
+                language={match ? match[1] : "text"}
+                PreTag="div"
+                className={props.className}
+              >
                 {String(children).replace(/\n$/, "")}
               </SyntaxHighlighter>
               <CopyButton content={String(children)} />

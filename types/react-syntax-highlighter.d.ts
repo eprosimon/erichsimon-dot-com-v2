@@ -7,7 +7,7 @@ declare module 'react-syntax-highlighter' {
         children: string;
         className?: string;
         inline?: boolean;
-        [key: string]: any;
+        [key: string]: unknown;
     }>;
 
     export const Light: ComponentType<{
@@ -16,7 +16,7 @@ declare module 'react-syntax-highlighter' {
         children: string;
         className?: string;
         inline?: boolean;
-        [key: string]: any;
+        [key: string]: unknown;
     }>;
 }
 

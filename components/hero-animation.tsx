@@ -32,8 +32,10 @@ export function HeroAnimation() {
       speedX: number
       speedY: number
       opacity: number
+      canvas: HTMLCanvasElement
 
       constructor(canvas: HTMLCanvasElement) {
+        this.canvas = canvas
         this.x = Math.random() * canvas.width
         this.y = Math.random() * canvas.height
         this.size = Math.random() * 5 + 1
@@ -42,14 +44,14 @@ export function HeroAnimation() {
         this.opacity = Math.random() * 0.5 + 0.1
       }
 
-      update(canvas: HTMLCanvasElement) {
+      update() {
         this.x += this.speedX
         this.y += this.speedY
 
-        if (this.x > canvas.width) this.x = 0
-        if (this.x < 0) this.x = canvas.width
-        if (this.y > canvas.height) this.y = 0
-        if (this.y < 0) this.y = canvas.height
+        if (this.x > this.canvas.width) this.x = 0
+        if (this.x < 0) this.x = this.canvas.width
+        if (this.y > this.canvas.height) this.y = 0
+        if (this.y < 0) this.y = this.canvas.height
       }
 
       draw(ctx: CanvasRenderingContext2D) {
@@ -92,7 +94,7 @@ export function HeroAnimation() {
 
       // Update and draw particles
       particles.forEach((particle) => {
-        particle.update(canvas)
+        particle.update()
         particle.draw(ctx)
       })
 
