@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, BookOpen, FolderKanban, Star, ListChecks, User, MessageCircle, Rss } from "lucide-react"
+import { Home, BookOpen, FolderKanban, Star, User, MessageCircle, Rss } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 
@@ -33,12 +33,6 @@ export function MobileNav() {
       label: "Reviews",
       icon: Star,
       active: pathname === "/reviews" || pathname.startsWith("/reviews/"),
-    },
-    {
-      href: "/recommendations",
-      label: "Recs",
-      icon: ListChecks,
-      active: pathname === "/recommendations",
     },
     {
       href: "/about",

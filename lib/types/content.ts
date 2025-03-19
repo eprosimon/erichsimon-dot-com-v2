@@ -52,6 +52,9 @@ export type Review = {
   publishedAt: string
   updatedAt: string
   relatedRecommendations?: string[] // IDs of related recommendations
+  isRecommended?: boolean // Whether I recommend this product
+  isCurrentlyUsed?: boolean // Whether I'm currently using this product
+  status?: RecommendationStatus // Current, Previous, or Heard
 }
 
 export type Project = {

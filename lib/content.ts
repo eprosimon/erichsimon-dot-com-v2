@@ -113,7 +113,9 @@ export function getAllProjects(): Project[] {
         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
 }
 
+// Deprecated - use getAllReviews and filter for recommended items instead
 export function getAllRecommendations(): Recommendation[] {
+    console.warn("getAllRecommendations is deprecated. Use getAllReviews and filter for recommended items instead.")
     ensureDirectoriesExist()
     const includeDrafts = shouldIncludeDrafts()
 
@@ -189,7 +191,9 @@ export function getProjectBySlug(slug: string): Project | undefined {
     return undefined
 }
 
+// Deprecated - use getReviewBySlug instead 
 export function getRecommendationById(id: string): Recommendation | undefined {
+    console.warn("getRecommendationById is deprecated. Use getReviewBySlug instead.")
     ensureDirectoriesExist()
     const includeDrafts = shouldIncludeDrafts()
 
@@ -244,7 +248,9 @@ export function getAllProjectCategories(): string[] {
     return [...new Set(projects.map(project => project.category))]
 }
 
+// Deprecated - use getAllReviewCategories instead
 export function getAllRecommendationCategories(): string[] {
+    console.warn("getAllRecommendationCategories is deprecated. Use getAllReviewCategories instead.")
     const recommendations = getAllRecommendations()
     return [...new Set(recommendations.map(recommendation => recommendation.category))]
 }
@@ -254,6 +260,7 @@ export function getAllBookmarkCategories(): string[] {
     return [...new Set(bookmarks.map(bookmark => bookmark.category))]
 }
 
+// Functions for filtering reviews
 export function getReviewsByCategory(category: string): Review[] {
     const reviews = getAllReviews()
     return reviews.filter(review => review.category === category)
@@ -264,7 +271,9 @@ export function getProjectsByCategory(category: string): Project[] {
     return projects.filter(project => project.category === category)
 }
 
+// Deprecated - use getReviewsByCategory and filter for recommended items instead
 export function getRecommendationsByCategory(category: string): Recommendation[] {
+    console.warn("getRecommendationsByCategory is deprecated. Use getReviewsByCategory and filter for recommended items instead.")
     const recommendations = getAllRecommendations()
     return recommendations.filter(recommendation => recommendation.category === category)
 }
@@ -295,17 +304,71 @@ export function getRelatedRecommendations(id: string): Recommendation[] {
         .filter((rec): rec is Recommendation => rec !== undefined)
 }
 
-// Additional specialized queries
-export function getRecommendationsByStatus(status: string): Recommendation[] {
-    const recommendations = getAllRecommendations()
-    return recommendations.filter(rec => rec.status === status)
+// Function to get recommended reviews
+export function getRecommendedReviews(): Review[] {
+    const reviews = getAllReviews()
+    return reviews.filter(review => review.isRecommended === true)
 }
 
+// Function to get currently used products
+export function getCurrentlyUsedReviews(): Review[] {
+    const reviews = getAllReviews()
+    return reviews.filter(review => review.isCurrentlyUsed === true || review.status === 'current')
+}
+
+// Function to get previously used products
+export function getPreviouslyUsedReviews(): Review[] {
+    const reviews = getAllReviews()
+    return reviews.filter(review => review.status === 'previous')
+}
+
+// Function to get heard about products
+export function getHeardAboutReviews(): Review[] {
+    const reviews = getAllReviews()
+    return reviews.filter(review => review.status === 'heard')
+}
+
+// Function to get featured reviews
+export function getFeaturedReviews(): Review[] {
+    const reviews = getAllReviews()
+    return reviews.filter(review => review.isRecommended === true)
+        .sort((a, b) => {
+            // Prioritize currently used
+            if (a.isCurrentlyUsed && !b.isCurrentlyUsed) return -1
+            if (!a.isCurrentlyUsed && b.isCurrentlyUsed) return 1
+
+            // Then sort by publish date
+            return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+        })
+        .slice(0, 6) // Get top 6 featured reviews
+}
+
+// Deprecated - use functions above instead
+export function getRecommendationsByStatus(status: string): Recommendation[] {
+    console.warn("getRecommendationsByStatus is deprecated. Use getCurrentlyUsedReviews, getPreviouslyUsedReviews, or getHeardAboutReviews instead.")
+    const recommendations = getAllRecommendations()
+    return recommendations.filter(recommendation => recommendation.status === status)
+}
+
+// Deprecated - use getCurrentlyUsedReviews instead
 export function getCurrentRecommendations(): Recommendation[] {
+    console.warn("getCurrentRecommendations is deprecated. Use getCurrentlyUsedReviews instead.")
     return getRecommendationsByStatus("current")
 }
 
+// Deprecated - use getFeaturedReviews instead
 export function getFeaturedRecommendations(): Recommendation[] {
+    console.warn("getFeaturedRecommendations is deprecated. Use getFeaturedReviews instead.")
     const recommendations = getAllRecommendations()
-    return recommendations.filter(rec => rec.featured)
+    return recommendations
+        .filter(recommendation => recommendation.featured)
+        .sort((a, b) => {
+            // Sort featured recommendations by status first (current > previous > heard)
+            if (a.status === "current" && b.status !== "current") return -1
+            if (a.status !== "current" && b.status === "current") return 1
+            if (a.status === "previous" && b.status === "heard") return -1
+            if (a.status === "heard" && b.status === "previous") return 1
+            return 0
+        })
+        .slice(0, 6) // Get top 6 featured recommendations
 } 
