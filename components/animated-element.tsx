@@ -39,7 +39,9 @@ export function AnimatedElement({
     let isRefresh = false
     if (typeof window !== "undefined") {
       const navEntries = performance.getEntriesByType("navigation")
-      isRefresh = navEntries.length > 0 && (navEntries[0].type === "reload" || navEntries[0].type === "back_forward")
+      isRefresh = navEntries.length > 0 &&
+        ((navEntries[0] as PerformanceNavigationTiming).type === "reload" ||
+          (navEntries[0] as PerformanceNavigationTiming).type === "back_forward")
     }
 
     // If it's a refresh, show content immediately

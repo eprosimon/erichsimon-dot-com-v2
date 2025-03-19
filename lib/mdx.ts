@@ -11,12 +11,16 @@ const postsDirectory = path.join(contentDir, "posts")
 // Create directories if they don't exist
 if (!fs.existsSync(contentDir)) {
   fs.mkdirSync(contentDir, { recursive: true })
-  console.log("Created content directory")
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Created content directory")
+  }
 }
 
 if (!fs.existsSync(postsDirectory)) {
   fs.mkdirSync(postsDirectory, { recursive: true })
-  console.log("Created posts directory")
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Created posts directory")
+  }
 }
 
 // Create a sample post if no posts exist
@@ -75,7 +79,9 @@ This is just a sample post to get you started. You can create more posts by addi
 `
 
     fs.writeFileSync(samplePostPath, sampleContent)
-    console.log("Created sample post")
+    if (process.env.NODE_ENV !== 'production') {
+      console.log("Created sample post")
+    }
   }
 }
 

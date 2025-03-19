@@ -1,74 +1,64 @@
 "use client"
 
-import type React from "react"
-
-import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
+import { ReactNode, useMemo } from "react"
 
 interface PageTransitionProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname()
-  const [isFirstRender, setIsFirstRender] = useState(true)
-  const [forceShow, setForceShow] = useState(false)
 
-  useEffect(() => {
-    // After first render, mark it as no longer first render
-    setIsFirstRender(false)
+  // Determine transition direction based on route
+  const direction = useMemo(() => {
+    if (!pathname) return "backward"
 
-    // Safety mechanism: force content to show after a short delay
-    // This ensures content is visible even if animations fail
-    const safetyTimer = setTimeout(() => {
-      setForceShow(true)
-    }, 500) // Reduced from 1000ms to 500ms for faster safety fallback
+    const isHome = pathname === "/"
+    const isBlog = pathname === "/blog" || pathname.startsWith("/blog/")
+    const isProjects = pathname === "/projects" || pathname.startsWith("/projects/")
+    const isReviews = pathname === "/reviews" || pathname.startsWith("/reviews/")
+    const isAbout = pathname === "/about"
+    const isChat = pathname === "/chat" || pathname === "/chat-dev"
 
-    return () => {
-      clearTimeout(safetyTimer)
-    }
+    // Consider if user is moving "forward" through site's typical information architecture
+    const isForward =
+      isHome ||
+      (isBlog && !isHome) ||
+      (isProjects && !isHome && !isBlog) ||
+      (isReviews && !isHome && !isBlog && !isProjects) ||
+      (isAbout && !isHome && !isBlog && !isProjects && !isReviews) ||
+      (isChat && !isHome && !isBlog && !isProjects && !isReviews && !isAbout)
+
+    return isForward ? "forward" : "backward"
   }, [pathname])
 
-  // Improve refresh detection
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Check if this is a refresh or back/forward navigation
-      const navEntries = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
-      const isRefresh =
-        navEntries.length > 0 && (navEntries[0].type === "reload" || navEntries[0].type === "back_forward")
-
-      if (isRefresh) {
-        // If it's a refresh, force show content immediately
-        setForceShow(true)
-      }
-    }
-  }, [])
-
-  // Skip animation on first render to prevent initial flash
-  if (isFirstRender || forceShow) {
-    return <>{children}</>
+  const animationVariants = {
+    forward: {
+      initial: { opacity: 0, x: 50 },
+      animate: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: -50 },
+    },
+    backward: {
+      initial: { opacity: 0, x: -50 },
+      animate: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: 50 },
+    },
   }
 
-  // Determine if animations should be enabled based on the current path
-  const isAnimationEnabledPath =
-    pathname?.includes('/projects') ||
-    pathname?.includes('/reviews') ||
-    pathname?.includes('/recommendations');
-
-  // If animations are disabled for this path, don't animate
-  if (!isAnimationEnabledPath) {
-    return <>{children}</>
-  }
+  const currentVariant = animationVariants[direction]
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={currentVariant}
+        transition={{ type: "spring", stiffness: 250, damping: 25 }}
+        className="min-h-screen"
       >
         {children}
       </motion.div>

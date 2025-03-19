@@ -24,7 +24,9 @@ export interface EmbeddingVector {
 // Placeholder function for future implementation
 export async function generateEmbeddings(text: string): Promise<number[]> {
   // This will be implemented when we add the embedding functionality
-  console.log("Generating embeddings for:", text.substring(0, 50) + "...")
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Generating embeddings for:", text.substring(0, 50) + "...")
+  }
   // TODO: IMPLEMENT BEFORE PRODUCTION - Currently returns mock data
   throw new Error("generateEmbeddings not implemented yet")
 }
@@ -32,7 +34,9 @@ export async function generateEmbeddings(text: string): Promise<number[]> {
 // Placeholder function for future implementation
 export async function similaritySearch(query: string, documents: Document[]): Promise<Document[]> {
   // This will be implemented when we add the vector search functionality
-  console.log("Searching for:", query)
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Searching for:", query)
+  }
   return documents
 }
 
@@ -105,9 +109,11 @@ export function chunkText(text: string, maxChunkSize = 1000): string[] {
 }
 
 // Placeholder for future vector search function
-export async function searchSimilarContent(query: string, topK = 3): Promise<Document[]> {
+export async function searchSimilarContent(query: string): Promise<Document[]> {
   // This will be implemented later when we have vector embeddings
-  console.log("Searching for content similar to:", query)
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Searching for content similar to:", query)
+  }
   return []
 }
 

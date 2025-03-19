@@ -16,7 +16,9 @@ function checkForImport(directory: string, searchString: string) {
     } else if (stats.isFile() && (file.endsWith(".ts") || file.endsWith(".tsx"))) {
       const content = fs.readFileSync(filePath, "utf8")
       if (content.includes(searchString)) {
-        console.log(`Found import in: ${filePath}`)
+        if (process.env.NODE_ENV !== 'production') {
+          console.log(`Found import in: ${filePath}`)
+        }
       }
     }
   }
@@ -26,5 +28,7 @@ function checkForImport(directory: string, searchString: string) {
 const rootDir = path.join(process.cwd())
 checkForImport(rootDir, "ensure-content-dir")
 
-console.log("Import check complete")
+if (process.env.NODE_ENV !== 'production') {
+  console.log("Import check complete")
+}
 

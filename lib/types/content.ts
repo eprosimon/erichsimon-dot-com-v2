@@ -52,6 +52,9 @@ export type Review = {
   publishedAt: string
   updatedAt: string
   relatedRecommendations?: string[] // IDs of related recommendations
+  isRecommended?: boolean // Whether I recommend this product
+  isCurrentlyUsed?: boolean // Whether I'm currently using this product
+  status?: RecommendationStatus // Current, Previous, or Heard
 }
 
 export type Project = {
@@ -68,5 +71,22 @@ export type Project = {
   updatedAt: string
   status: "ongoing" | "completed" // Whether the project is still being updated
   lastPostDate: string // Date of the most recent post
+}
+
+export type Bookmark = {
+  id: string
+  slug?: string
+  title: string
+  url: string
+  excerpt: string
+  category: string
+  tags: string[]
+  bookmarkType: "tool" | "article" | "video" | "library" | "resource" | "other"
+  screenshot?: string
+  publishedAt: string
+  updatedAt: string
+  featured?: boolean
+  content?: string
+  isDraft?: boolean
 }
 

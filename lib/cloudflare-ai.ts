@@ -63,7 +63,9 @@ export function checkCloudflareEnv() {
 
   const isConfigured = !!accountId && !!apiToken
 
-  console.log("Cloudflare environment check: " + (isConfigured ? "✓ Configured" : "✗ Missing configuration"))
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("Cloudflare environment check: " + (isConfigured ? "✓ Configured" : "✗ Missing configuration"))
+  }
 
   return {
     isConfigured,

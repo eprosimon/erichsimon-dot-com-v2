@@ -1,0 +1,66 @@
+{
+    "packageManager": "pnpm",
+    "turboTasks": {
+        "dev": "pnpm turbo:dev",
+        "build": "pnpm turbo:build",
+        "lint": "pnpm turbo:lint",
+        "clean": "pnpm clean"
+    },
+    "rules": [
+        {
+            "description": "Always use pnpm instead of npm or yarn",
+            "pattern": "npm (install|i|add|run)|yarn (add|install)",
+            "message": "Please use pnpm instead of npm or yarn"
+        },
+        {
+            "description": "Use Turbo for build operations",
+            "pattern": "next build",
+            "message": "Please use 'pnpm turbo:build' for better caching"
+        },
+        {
+            "description": "Use 'tasks' instead of 'pipeline' in turbo.json",
+            "pattern": "\"pipeline\"\\s*:",
+            "message": "In Turbo 2.0+, use 'tasks' instead of 'pipeline' in turbo.json"
+        },
+        {
+            "description": "Properly await searchParams in Next.js route handlers",
+            "pattern": "searchParams\\?\\.(\\w+)",
+            "message": "In Next.js 15+, searchParams must be awaited before accessing its properties. Use 'const params = await Promise.resolve(searchParams || {});' then access properties from params."
+        },
+        {
+            "description": "Use PerformanceNavigationTiming for navigation type info",
+            "pattern": "navEntries\\[\\d+\\]\\.type",
+            "message": "Property 'type' does not exist on type 'PerformanceEntry'. Use '(navEntries[0] as PerformanceNavigationTiming).type' instead."
+        },
+        {
+            "description": "Make params a Promise in dynamic route Page components",
+            "pattern": "params\\s*:\\s*\\{\\s*\\w+\\s*:\\s*string\\s*\\}",
+            "message": "In Next.js 15+, params must be a Promise. Use 'params: Promise<{ slug: string }>' instead."
+        },
+        {
+            "description": "Await params in dynamic route components",
+            "pattern": "const\\s+\\{\\s*\\w+\\s*\\}\\s*=\\s*params",
+            "message": "In Next.js 15+, params must be awaited. Use 'const { slug } = await params;' instead."
+        },
+        {
+            "description": "Make async function return types explicit",
+            "pattern": "async\\s+function\\s+\\w+.*\\)\\s*\\{",
+            "message": "Async functions should have explicit return types using Promise<T>."
+        },
+        {
+            "description": "Properly type explicit any",
+            "pattern": ":\\s*any",
+            "message": "Avoid using 'any' type, specify a more precise type instead."
+        },
+        {
+            "description": "Check imports for unused variables",
+            "pattern": "import\\s+\\{([^}]+)\\}",
+            "message": "Check for unused imports and remove them to avoid linting errors."
+        },
+        {
+            "description": "Use proper JSX entity escaping",
+            "pattern": "[\"'](?![^<>]*>)",
+            "message": "Properly escape quotes in JSX using entities like &apos; or &quot;."
+        }
+    ]
+}

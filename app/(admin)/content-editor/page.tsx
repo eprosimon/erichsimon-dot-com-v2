@@ -13,7 +13,7 @@ import { toast } from "@/components/ui/use-toast"
 
 // This page is not indexed by search engines and is not linked from anywhere
 export default function ContentEditorPage() {
-  const router = useRouter()
+  const _router = useRouter()
   const [activeTab, setActiveTab] = useState("post")
   const [previewMode, setPreviewMode] = useState<"edit" | "preview">("edit")
   const [formData, setFormData] = useState({
@@ -259,8 +259,8 @@ export default function ContentEditorPage() {
 
                   <TabsContent value="preview">
                     <ContentPreview
-                      type={type.id}
-                      data={formData}
+                      _type={type.id}
+                      _data={formData}
                       markdown={generateMarkdown() || ""}
                     />
                   </TabsContent>

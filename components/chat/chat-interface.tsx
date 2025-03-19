@@ -10,35 +10,40 @@ import { ChatMessage } from "@/components/chat/chat-message"
 import { ChatScrollAnchor } from "@/components/chat/chat-scroll-anchor"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, Send, Zap } from "lucide-react"
+import { Message } from 'ai'
+
+interface TestStatus {
+  loading: boolean;
+  error?: string;
+  details?: Record<string, unknown>;
+  rawResponse?: string;
+}
 
 export function ChatInterface() {
   const [inputValue, setInputValue] = useState("")
-  const [testStatus, setTestStatus] = useState<{
-    loading: boolean
-    error?: string
-    details?: any
-    rawResponse?: string
-  }>({ loading: false })
+  const [testStatus, setTestStatus] = useState<TestStatus>({ loading: false })
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+  const { messages, handleInputChange, handleSubmit, isLoading, error } = useChat({
     api: "/api/chat",
-    onResponse: (response) => {
-      // Log the raw response for debugging
-      console.log("Chat Response:", {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        contentType: response.headers.get("Content-Type"),
-      })
+    onResponse: (response: Response) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Chat Response:", {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          contentType: response.headers.get("Content-Type"),
+        })
+      }
     },
-    onError: (error) => {
-      // Log detailed error information
-      console.error("Chat Error:", {
-        message: error.message,
-        name: error.name,
-        stack: error.stack,
-        cause: error.cause,
-      })
+    onError: (error: Error) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error("Chat Error:", {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+          cause: error.cause,
+        })
+      }
     },
   })
 
@@ -66,7 +71,9 @@ export function ChatInterface() {
   const testConnection = async () => {
     setTestStatus({ loading: true })
     try {
-      console.log("Testing connection to chat API")
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Testing connection to chat API")
+      }
       const response = await fetch("/api/chat/test", {
         method: "POST",
         headers: {
@@ -75,16 +82,20 @@ export function ChatInterface() {
         body: JSON.stringify({}),
       })
 
-      console.log("Test response received:", {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        contentType: response.headers.get("Content-Type"),
-      })
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Test response received:", {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          contentType: response.headers.get("Content-Type"),
+        })
+      }
 
       // Get the raw response text
       const responseText = await response.text()
-      console.log("Raw response text:", responseText)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("Raw response text:", responseText)
+      }
 
       // Check if the response is JSON or plain text
       const contentType = response.headers.get("Content-Type") || ""
@@ -180,12 +191,14 @@ export function ChatInterface() {
                   <div className="mt-2">
                     <strong>Response:</strong>
                     <pre className="mt-1 text-xs overflow-auto max-h-40 p-2 bg-muted rounded">
-                      {testStatus.rawResponse}
+                      {typeof testStatus.rawResponse === 'string' ? testStatus.rawResponse : 'Invalid response'}
                     </pre>
                   </div>
                 ) : (
                   <pre className="mt-2 text-xs overflow-auto max-h-40">
-                    {JSON.stringify(testStatus.details, null, 2)}
+                    {typeof testStatus.details === 'object' && testStatus.details !== null ?
+                      JSON.stringify(testStatus.details, null, 2) :
+                      'No details available'}
                   </pre>
                 )}
               </>
@@ -205,7 +218,7 @@ export function ChatInterface() {
             </div>
           </div>
         ) : (
-          messages.map((message) => <ChatMessage key={message.id} message={message} />)
+          messages.map((message: Message) => <ChatMessage key={message.id} message={message} />)
         )}
 
         {isLoading && (
@@ -219,9 +232,6 @@ export function ChatInterface() {
           <div className="p-4 rounded-lg bg-destructive/10 text-destructive">
             <p className="text-sm font-medium">Error: {error.message}</p>
             <p className="text-xs mt-1">Try refreshing the page or checking your connection.</p>
-            {error.cause && (
-              <pre className="mt-2 text-xs overflow-auto max-h-40">{JSON.stringify(error.cause, null, 2)}</pre>
-            )}
           </div>
         )}
 

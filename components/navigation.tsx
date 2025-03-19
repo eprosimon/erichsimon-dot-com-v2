@@ -33,11 +33,6 @@ export function Navigation() {
       active: pathname === "/reviews" || pathname.startsWith("/reviews/"),
     },
     {
-      href: "/recommendations",
-      label: "Recommendations",
-      active: pathname === "/recommendations",
-    },
-    {
       href: "/about",
       label: "About",
       active: pathname === "/about",

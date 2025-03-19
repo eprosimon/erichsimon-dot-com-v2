@@ -1,0 +1,80 @@
+---
+id: "homelab-setup"
+slug: "homelab-setup"
+title: "Building My Homelab"
+description: "Follow along as I build and evolve my homelab setup for self-hosting services, learning, and experimentation."
+excerpt: "A detailed chronicle of my homelab journey, from initial hardware selection to running various self-hosted services."
+coverImage: "/placeholder.svg?height=600&width=1200"
+posts:
+  - "homelab-hardware-guide"
+  - "networking-basics"
+  - "proxmox-setup"
+  - "docker-essentials"
+  - "self-hosted-services"
+  - "homelab-monitoring"
+tags: ["homelab", "server", "networking", "self-hosted"]
+category: "Homelab"
+publishedAt: "2024-02-15"
+updatedAt: "2024-03-20"
+status: "ongoing"
+lastPostDate: "2024-03-20"
+---
+
+# Building My Homelab
+
+This is an ongoing project documenting my journey building a homelab for self-hosting services, learning about infrastructure, and experimenting with new technologies.
+
+## Project Goals
+
+1. Set up a reliable home server environment for hosting essential services
+2. Learn more about networking, virtualization, and infrastructure management
+3. Reduce dependency on third-party cloud services where possible
+4. Create a practical learning environment for experimenting with new technologies
+
+## Hardware Setup
+
+My current homelab setup consists of:
+
+- **Server**: Dell OptiPlex 7060 Micro (i5-8500T, 32GB RAM, 1TB NVMe)
+- **NAS**: Synology DS920+ (4-bay, 16TB total storage)
+- **Networking**: Ubiquiti UniFi Dream Machine Pro + Switch Lite 16 PoE
+- **Power Backup**: APC BX1500M UPS
+
+## Software Stack
+
+The core software components:
+
+- **Hypervisor**: Proxmox VE 7.4
+- **Containers**: Docker + Portainer
+- **Automation**: Ansible + Home Assistant
+- **Monitoring**: Grafana + Prometheus + InfluxDB
+
+## Current Services
+
+I'm currently running the following services:
+
+- Nginx Proxy Manager
+- Pi-hole for network-wide ad blocking
+- Bitwarden password manager
+- Home Assistant for home automation
+- Nextcloud for file storage and synchronization
+- Jellyfin media server
+- Paperless-ngx document management
+
+## Project Posts
+
+This project is divided into several posts covering different aspects of the homelab journey:
+
+1. **[Homelab Hardware Guide](blog/homelab-hardware-guide)** - Choosing the right hardware components
+2. **[Networking Basics](blog/networking-basics)** - Setting up the network infrastructure
+3. **[Proxmox Setup](blog/proxmox-setup)** - Installing and configuring Proxmox VE
+4. **[Docker Essentials](blog/docker-essentials)** - Working with containers and Portainer
+5. **[Self-Hosted Services](blog/self-hosted-services)** - Setting up essential services
+6. **[Homelab Monitoring](blog/homelab-monitoring)** - Monitoring the system with Grafana and Prometheus
+
+## Future Plans
+
+- Expand storage capacity
+- Implement proper backup solutions
+- Add CI/CD pipeline for personal projects
+- Explore Kubernetes for container orchestration 

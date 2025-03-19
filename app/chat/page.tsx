@@ -107,7 +107,7 @@ export default function ChatPage() {
             </Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/recommendations" className="flex items-center gap-1">
+            <Link href="/reviews?recommended=true" className="flex items-center gap-1">
               Recommendations <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

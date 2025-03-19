@@ -4,7 +4,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { ChevronLeft, ExternalLink, Star } from "lucide-react"
 import { getAllReviews, getReviewBySlug } from "@/lib/data/reviews"
-import { getRecommendationById } from "@/lib/data/recommendations"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -14,13 +13,14 @@ import { GiscusComments } from "@/components/giscus-comments"
 import { generateReviewStructuredData } from "@/lib/structured-data"
 
 interface ReviewPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: ReviewPageProps): Promise<Metadata> {
-  const review = getReviewBySlug(params.slug)
+  const { slug } = await params;
+  const review = getReviewBySlug(slug)
 
   if (!review) {
     return {
@@ -57,8 +57,9 @@ export function generateStaticParams() {
   }))
 }
 
-export default function ReviewPage({ params }: ReviewPageProps) {
-  const review = getReviewBySlug(params.slug)
+export default async function ReviewPage({ params }: ReviewPageProps) {
+  const { slug } = await params;
+  const review = getReviewBySlug(slug)
 
   if (!review) {
     notFound()
@@ -68,16 +69,23 @@ export default function ReviewPage({ params }: ReviewPageProps) {
   const url = `https://erichsimon.com/reviews/${review.slug}`
   const structuredData = generateReviewStructuredData(review, url)
 
+  // Get related reviews (previously recommendations)
+  const relatedReviews = review.relatedRecommendations
+    ? review.relatedRecommendations
+      .map(recId => getReviewBySlug(recId))
+      .filter(review => review !== undefined)
+    : []
+
   return (
     <div className="container max-w-4xl py-6 md:py-16">
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData)
             .replace(/</g, '\\u003c')
             .replace(/>/g, '\\u003e')
             .replace(/&/g, '\\u0026')
-        }} 
+        }}
       />
 
       <Link
@@ -104,13 +112,12 @@ export default function ReviewPage({ params }: ReviewPageProps) {
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`h-5 w-5 ${
-                  i < Math.floor(review.rating)
-                    ? "fill-primary text-primary"
-                    : i < review.rating
-                      ? "fill-primary/50 text-primary"
-                      : "fill-muted text-muted"
-                }`}
+                className={`h-5 w-5 ${i < Math.floor(review.rating)
+                  ? "fill-primary text-primary"
+                  : i < review.rating
+                    ? "fill-primary/50 text-primary"
+                    : "fill-muted text-muted"
+                  }`}
               />
             ))}
           </div>
@@ -140,12 +147,36 @@ export default function ReviewPage({ params }: ReviewPageProps) {
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-2">
           {review.tags.map((tag) => (
             <Badge key={tag} variant="secondary">
               <Link href={`/reviews?tag=${tag}`}>{tag}</Link>
             </Badge>
           ))}
+        </div>
+
+        {/* Status badges */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {review.isRecommended && (
+            <Badge className="bg-green-500/90 hover:bg-green-500 text-white">
+              Recommended
+            </Badge>
+          )}
+          {(review.isCurrentlyUsed || review.status === "current") && (
+            <Badge className="bg-blue-500/90 hover:bg-blue-500 text-white">
+              Currently Using
+            </Badge>
+          )}
+          {review.status === "previous" && (
+            <Badge className="bg-orange-500/90 hover:bg-orange-500 text-white">
+              Previously Used
+            </Badge>
+          )}
+          {review.status === "heard" && (
+            <Badge className="bg-purple-500/90 hover:bg-purple-500 text-white">
+              Heard Good Things
+            </Badge>
+          )}
         </div>
 
         <div className="bg-muted/30 rounded-lg p-6 mb-8">
@@ -196,34 +227,29 @@ export default function ReviewPage({ params }: ReviewPageProps) {
           <CustomMDX content={review.content} />
         </div>
 
-        {review.relatedRecommendations && review.relatedRecommendations.length > 0 && (
+        {relatedReviews.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-6">Related Recommendations</h2>
+            <h2 className="text-2xl font-bold mb-6">Related Reviews</h2>
             <div className="grid gap-6 sm:grid-cols-2">
-              {review.relatedRecommendations.map((recId) => {
-                const recommendation = getRecommendationById(recId)
-                if (!recommendation) return null
-
-                return (
-                  <Card key={recId} className="overflow-hidden">
-                    <CardHeader className="pb-2">
-                      <CardTitle>{recommendation.name}</CardTitle>
-                      <CardDescription>{recommendation.shortDescription}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-sm">
-                      <p className="line-clamp-3">{recommendation.description}</p>
-                    </CardContent>
-                    <CardFooter className="border-t pt-4">
-                      <Link
-                        href={`/recommendations#${recommendation.id}`}
-                        className="text-sm font-medium text-primary hover:underline"
-                      >
-                        View recommendation
-                      </Link>
-                    </CardFooter>
-                  </Card>
-                )
-              })}
+              {relatedReviews.map((relatedReview) => (
+                <Card key={relatedReview.id} className="overflow-hidden">
+                  <CardHeader className="pb-2">
+                    <CardTitle>{relatedReview.productName}</CardTitle>
+                    <CardDescription>{relatedReview.excerpt}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-sm">
+                    <p className="line-clamp-3">{relatedReview.excerpt}</p>
+                  </CardContent>
+                  <CardFooter className="border-t pt-4">
+                    <Link
+                      href={`/reviews/${relatedReview.slug}`}
+                      className="text-sm font-medium text-primary hover:underline"
+                    >
+                      Read review
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
           </div>
         )}

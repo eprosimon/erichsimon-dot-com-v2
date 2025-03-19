@@ -1,0 +1,75 @@
+---
+id: "cloudflare-r2-review"
+slug: "cloudflare-r2-storage-review"
+title: "Cloudflare R2 Storage Review: S3-Compatible Storage Without Egress Fees"
+excerpt: "An analysis of Cloudflare R2 Storage, a developer-friendly object storage solution that eliminates costly egress fees."
+rating: 4.7
+productName: "Cloudflare R2 Storage"
+productUrl: "https://www.cloudflare.com/products/r2/"
+affiliateUrl: ""
+coverImage: "/placeholder.svg?height=600&width=1200"
+pros: 
+  - "No egress fees - eliminates a major cloud cost"
+  - "S3-compatible API for easy migration"
+  - "Generous free tier (10GB storage, 10M class A operations)"
+  - "Global distribution by default"
+cons: 
+  - "Newer service with fewer features than AWS S3"
+  - "Limited region selection (global by default)"
+  - "Higher class A operation costs than some competitors"
+verdict: "Cloudflare R2 is a game-changer for developers looking to avoid unpredictable egress costs while maintaining S3 compatibility."
+tags: ["cloud", "storage", "developer", "infrastructure"]
+category: "Developer Tools"
+publishedAt: "2024-04-01"
+updatedAt: "2024-04-01"
+relatedRecommendations: ["backblaze", "vercel"]
+---
+
+# Cloudflare R2 Storage Review
+
+*This is a draft review - still working on benchmarks and pricing comparisons*
+
+## What is Cloudflare R2?
+
+Cloudflare R2 Storage is an S3-compatible object storage service that eliminates egress fees, which are typically a significant cost when using services like AWS S3 or Google Cloud Storage.
+
+## Key Features
+
+- **Zero egress fees**: No charges for data retrieval, regardless of volume
+- **S3 compatibility**: Uses the same API as Amazon S3
+- **Global distribution**: Data is automatically distributed globally
+- **Worker integration**: Seamless integration with Cloudflare Workers
+- **Access controls**: Granular permissions and access policies
+
+## Performance
+
+*To be completed with benchmarks*
+
+## Pricing
+
+R2's pricing model is straightforward:
+- Storage: $0.015 per GB per month
+- Class A operations (PUT, POST, LIST): $4.50 per million requests
+- Class B operations (GET): Free
+- Data transfer OUT: Free (this is the big differentiator)
+
+Free tier includes:
+- 10 GB of storage per month
+- 10 million Class A operations per month
+- Unlimited Class B operations
+- Unlimited egress
+
+## Use Cases
+
+R2 is particularly well-suited for:
+- Media storage (images, videos)
+- Static website assets
+- Backup storage
+- Content distribution
+- Applications with heavy read patterns
+
+## Verdict
+
+*To be finalized after more testing*
+
+Initial assessment: Cloudflare R2 represents a significant shift in cloud storage pricing models and could substantially reduce costs for applications with high data retrieval needs. 

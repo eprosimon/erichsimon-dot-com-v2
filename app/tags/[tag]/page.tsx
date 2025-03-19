@@ -6,15 +6,16 @@ import type { Post } from "@/lib/types"
 import { PostCard } from "@/components/post-card"
 
 interface TagPageProps {
-  params: {
+  params: Promise<{
     tag: string
-  }
+  }>
 }
 
-export function generateMetadata({ params }: TagPageProps): Metadata {
+export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
+  const { tag } = await params;
   return {
-    title: `${params.tag} | Erich Simon`,
-    description: `Posts tagged with ${params.tag}`,
+    title: `${tag} | Erich Simon`,
+    description: `Posts tagged with ${tag}`,
   }
 }
 
@@ -40,8 +41,8 @@ export function generateStaticParams() {
   }))
 }
 
-export default function TagPage({ params }: TagPageProps) {
-  const { tag } = params;
+export default async function TagPage({ params }: TagPageProps) {
+  const { tag } = await params;
   let posts: Post[] = [];
 
   try {

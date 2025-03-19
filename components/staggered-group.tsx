@@ -1,9 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useEffect, useState, Children, cloneElement, isValidElement } from "react"
+import { useEffect, useState, Children } from "react"
 import { useInView } from "@/hooks/use-in-view"
-import { cn } from "@/lib/utils"
 
 interface StaggeredGroupProps {
   children: React.ReactNode
@@ -39,7 +38,9 @@ export function StaggeredGroup({
     if (typeof window !== "undefined") {
       const navEntries = performance.getEntriesByType("navigation")
       const isRefresh =
-        navEntries.length > 0 && (navEntries[0].type === "reload" || navEntries[0].type === "back_forward")
+        navEntries.length > 0 &&
+        ((navEntries[0] as PerformanceNavigationTiming).type === "reload" ||
+          (navEntries[0] as PerformanceNavigationTiming).type === "back_forward")
 
       if (isRefresh) {
         // If it's a refresh, show content immediately
@@ -56,26 +57,28 @@ export function StaggeredGroup({
     return () => clearTimeout(timer)
   }, [])
 
-  const childrenArray = Children.toArray(children)
-
+  // Wrap individual children in styled divs instead of using cloneElement
+  // This avoids the TypeScript issues with cloneElement
   return (
     <Component ref={ref} className={className}>
-      {childrenArray.map((child, index) => {
-        if (!isValidElement(child)) return child
-
+      {Children.map(children, (child, index) => {
         const delay = baseDelay + index * staggerDelay * 1000 // Convert to ms
         const style = hasTriggered
           ? {
-              animationDelay: `${delay}ms`,
-              opacity: 1,
-            }
+            animationDelay: `${delay}ms`,
+            opacity: 1,
+          }
           : { opacity: 0 }
 
-        return cloneElement(child, {
-          className: cn(hasTriggered ? animation : "", child.props.className),
-          style: { ...child.props.style, ...style },
-          key: index,
-        })
+        return (
+          <div
+            key={index}
+            className={hasTriggered ? animation : ""}
+            style={style}
+          >
+            {child}
+          </div>
+        );
       })}
     </Component>
   )
